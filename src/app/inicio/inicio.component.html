@@ -1,0 +1,61 @@
+<header>
+    <p>&copy; COVEICyDET</p>
+    <div class="timer">
+        Tiempo restante: {{ formatoTiempo() }}
+    </div>
+    <div class="timer">
+        Tiempo restante: {{ formatoTiempo() }}
+    </div>
+</header>
+<div class="card">
+    
+    <div class="tabs">
+        <button [class.active]="seccionActiva === 'informacionGeneral'"
+            (click)="cambiarSeccion('informacionGeneral')">Información General</button>
+        <button [class.active]="seccionActiva === 'produccionCientifica'"
+            (click)="cambiarSeccion('produccionCientifica')">Producción Científica y/o Académica</button>
+        <button [class.active]="seccionActiva === 'documentacion'"
+            (click)="cambiarSeccion('documentacion')">Documentación</button>
+    </div>
+
+    <!-- Información General -->
+    <div class="content" *ngIf="seccionActiva === 'informacionGeneral'">
+        <h2>Información General</h2>
+        <div *ngFor="let item of informacionGeneral | keyvalue">
+            <h3>{{ item.key | titlecase }}</h3>
+            <p>{{ item.value || 'No hay información' }}</p>
+            <div class="add-info">
+                <button (click)="navegarAComponente(item.key, 'informacionGeneral')">Ir a {{ item.key | titlecase
+                    }}</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Producción Científica y/o Académica -->
+    <div class="content" *ngIf="seccionActiva === 'produccionCientifica'">
+        <h2>Producción Científica y/o Académica</h2>
+        <div *ngFor="let item of produccionCientifica | keyvalue">
+            <h3>{{ item.key | titlecase }}</h3>
+            <p>{{ item.value || 'No hay información' }}</p>
+            <div class="add-info">
+                <button (click)="navegarAComponente(item.key, 'produccionCientifica')">Ir a {{ item.key | titlecase
+                    }}</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Documentación -->
+    <div class="content" *ngIf="seccionActiva === 'documentacion'">
+        <h2>Documentación</h2>
+        <div *ngFor="let item of documentacion | keyvalue">
+            <h3>{{ item.key | titlecase }}</h3>
+            <p>{{ item.value || 'No hay información' }}</p>
+            <div class="add-info">
+                <button (click)="navegarAComponente(item.key, 'documentacion')">Ir a {{ item.key | titlecase }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<footer>
+    <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
+</footer>

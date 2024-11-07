@@ -1,0 +1,58 @@
+<body>
+    <header>
+        <p>&copy; COVEICyDET</p>
+        <div class="timer">
+            Tiempo restante: {{ formatoTiempo() }}
+        </div>
+    </header>
+    <div class="card">
+        <div class="contact-form">
+            <h2>Informacion general > Lugar de nacimiento</h2>
+            <form [formGroup]="birthPlaceForm" (ngSubmit)="onSubmit()">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pais">País</label>
+                        <input type="text" id="pais" formControlName="pais">
+                        <div *ngIf="isFieldInvalid('pais')" class="error-message">
+                            País es requerido.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="estado">Estado</label>
+                        <input type="text" id="estado" formControlName="estado">
+                        <div *ngIf="isFieldInvalid('estado')" class="error-message">
+                            Estado es requerido.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ciudad">Ciudad</label>
+                        <input type="text" id="ciudad" formControlName="ciudad">
+                        <div *ngIf="isFieldInvalid('ciudad')" class="error-message">
+                            Ciudad es requerida.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fechaNacimiento">Fecha de nacimiento</label>
+                        <input type="date" id="fechaNacimiento" formControlName="fechaNacimiento">
+                        <div *ngIf="isFieldInvalid('fechaNacimiento')" class="error-message">
+                            Fecha de nacimiento es requerida.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="numeroFM">No. FM (Extranjeros)</label>
+                        <input type="text" id="numeroFM" formControlName="numeroFM">
+                    </div>
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="btn-guardar">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
+    </footer>
+
+</body>

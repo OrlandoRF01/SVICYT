@@ -1,0 +1,74 @@
+<body>
+    <header>
+        <p>&copy; COVEICyDET</p>
+        <div class="timer">
+            Tiempo restante: {{ formatoTiempo() }}
+        </div>
+    </header>
+    <div class="card">
+        <div class="contact-form">
+            <h2>Informacion general > Datos personales</h2>
+            <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nombre">Nombre(s)</label>
+                        <input type="text" id="nombre" formControlName="nombre">
+                        <div *ngIf="isFieldInvalid('nombre')" class="error-message">
+                            Nombre es requerido.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="apellidoPaterno">Apellido Paterno</label>
+                        <input type="text" id="apellidoPaterno" formControlName="apellidoPaterno">
+                        <div *ngIf="isFieldInvalid('apellidoPaterno')" class="error-message">
+                            Apellido paterno es requerido.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="apellidoMaterno">Apellido Materno</label>
+                        <input type="text" id="apellidoMaterno" formControlName="apellidoMaterno">
+                        <div *ngIf="isFieldInvalid('apellidoMaterno')" class="error-message">
+                            Apellido materno es requerido.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="rfc">RFC</label>
+                        <input type="text" id="rfc" formControlName="rfc">
+                        <div *ngIf="isFieldInvalid('rfc')" class="error-message">
+                            RFC es requerido.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="curp">Curp</label>
+                        <input type="text" id="curp" formControlName="curp">
+                        <div *ngIf="isFieldInvalid('curp')" class="error-message">
+                            Curp es requerido.
+                        </div>
+                    </div>
+                    <div class="form-group sexo-group">
+                        <label>Sexo</label>
+                        <div>
+                            <input type="radio" id="femenino" formControlName="sexo" value="femenino">
+                            <label for="femenino">Femenino</label>
+                            <input type="radio" id="masculino" formControlName="sexo" value="masculino">
+                            <label for="masculino">Masculino</label>
+                        </div>
+                        <div *ngIf="isFieldInvalid('sexo')" class="error-message">
+                            Sexo es requerido.
+                        </div>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="btn-guardar">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
+    </footer>
+
+</body>

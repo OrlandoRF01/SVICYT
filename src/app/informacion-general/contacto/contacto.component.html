@@ -1,0 +1,69 @@
+<body>
+    
+    <header>
+        <p>&copy; COVEICyDET</p>
+        <div class="timer">
+            Tiempo restante: {{ formatoTiempo() }}
+        </div>
+    </header>
+    <div class="card">
+        <div class="contact-form">
+            <h2>Informacion general > Contacto</h2>
+            <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="correoParticular">Correo particular</label>
+                        <input type="email" id="correoParticular" formControlName="correoParticular">
+                        <div *ngIf="isFieldInvalid('correoParticular')" class="error-message">
+                            Correo particular es requerido y debe ser válido.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="correoInstitucional">Correo institucional</label>
+                        <input type="email" id="correoInstitucional" formControlName="correoInstitucional">
+                        <div *ngIf="isFieldInvalid('correoInstitucional')" class="error-message">
+                            Correo institucional es requerido y debe ser válido.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefonoPrincipal">Telefono principal</label>
+                        <input type="tel" id="telefonoPrincipal" formControlName="telefonoPrincipal">
+                        <div *ngIf="isFieldInvalid('telefonoPrincipal')" class="error-message">
+                            Teléfono principal es requerido.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="celular">Celular</label>
+                        <input type="tel" id="celular" formControlName="celular">
+                        <div *ngIf="isFieldInvalid('celular')" class="error-message">
+                            Celular es requerido.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="institucionLaboral">Institucion laboral</label>
+                        <input type="text" id="institucionLaboral" formControlName="institucionLaboral">
+                        <div *ngIf="isFieldInvalid('institucionLaboral')" class="error-message">
+                            Institución laboral es requerida.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="adscripcionEspecifica">Adscripcion especifica</label>
+                        <input type="text" id="adscripcionEspecifica" formControlName="adscripcionEspecifica">
+                        <div *ngIf="isFieldInvalid('adscripcionEspecifica')" class="error-message">
+                            Adscripción específica es requerida.
+                        </div>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="btn-guardar">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
+    </footer>
+
+</body>

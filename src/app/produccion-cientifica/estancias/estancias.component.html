@@ -1,0 +1,73 @@
+<body>
+
+    <header>
+        <p>&copy; COVEICyDET</p>
+        <div class="timer">
+            Tiempo restante: {{ formatoTiempo() }}
+        </div>
+    </header>
+
+    <div class="card">
+        <div class="estancia-form">
+            <h2>Producción Científica > Registro de Estancias</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Institución</th>
+                        <th>Proyecto</th>
+                        <th>Fecha de inicio</th>
+                        <th>Fecha de término</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let estancia of estancias">
+                        <td>{{ estancia.institucion }}</td>
+                        <td>{{ estancia.proyecto }}</td>
+                        <td>{{ estancia.fechaInicio }}</td>
+                        <td>{{ estancia.fechaTermino }}</td>
+                        <td>
+                            <button (click)="editarEstancia(estancia)">Editar</button>
+                            <button (click)="eliminarEstancia(estancia)">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button (click)="mostrarModal()" class="btn-agregar">Agregar</button>
+        </div>
+    </div>
+
+
+    <div *ngIf="modalVisible" class="modal">
+        <div class="modal-content">
+            <h3>{{ modoEdicion ? 'Editar' : 'Agregar' }} Estancia</h3>
+            <form [formGroup]="estanciasForm" (ngSubmit)="guardarEstancia()">
+                <div>
+                    <label for="Institución">Institución</label>
+                    <input formControlName="institucion" placeholder="Institución">
+                </div>
+                <div>
+                    <label for="proyecto">Proyecto</label>
+                    <input formControlName="proyecto" placeholder="Proyecto">
+                </div>
+                <div>
+                    <label for="fechaInicio">Fecha de inicio</label>
+                    <input formControlName="fechaInicio" type="date" placeholder="Fecha de inicio">
+                </div>
+                <div>
+                    <label for="fechaTermino">Fecha de término</label>
+                    <input formControlName="fechaTermino" type="date" placeholder="Fecha de término">
+                </div>
+                <div class="button-container">
+                    <button type="submit">Guardar</button>
+                    <button type="button" (click)="cerrarModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
+    </footer>
+
+</body>

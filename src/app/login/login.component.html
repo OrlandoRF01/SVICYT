@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="login-box">
+        <div class="left">
+            <p>Bienvenido a la Plataforma del Padrón Veracruzano de Investigadores</p>
+        </div>
+        <div class="right">
+            <h2>Inicio de sesión</h2>
+            <form (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label for="rfc">RFC</label>
+                    <input type="text" id="rfc" placeholder="RFC" required [(ngModel)]="rfc" name="rfc">
+                </div>
+                <label for="password">Contraseña</label>
+                <div class="form-group password-group">
+                    <input [type]="passwordVisible ? 'text' : 'password'" id="password" placeholder="Contraseña"
+                        required [(ngModel)]="password" name="password">
+                    <span class="eye-icon" (click)="togglePasswordVisibility()">👁</span>
+                </div>
+                <div class="forgot-password">
+                    <a href="#">Olvidé mi contraseña</a>
+                </div>
+                <button type="submit">Aceptar</button>
+            </form>
+            <div class="register">
+                <p>¿No estás registrado?
+                    <a (click)="irARegistro()">Regístrate aquí.</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

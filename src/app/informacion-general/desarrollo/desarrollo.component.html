@@ -1,0 +1,78 @@
+<body>
+
+    <header>
+        <p>&copy; COVEICyDET</p>
+        <div class="timer">
+            Tiempo restante: {{ formatoTiempo() }}
+        </div>
+    </header>
+    <div class="card">
+        <div class="contact-form">
+            <h2>Informacion general > Desarrollo</h2>
+            <form [formGroup]="desarrolloForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label for="areaCiencia">Área de la ciencia en la que desarrolla actividades científicas, tecnológicas
+                        y/o innovación</label>
+                    <select id="areaCiencia" formControlName="areaCiencia">
+                        <option value="">Seleccione una opción</option>
+                        <!-- Agregar opciones aquí -->
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="campo">Campo</label>
+                        <select id="campo" formControlName="campo">
+                            <option value="">Seleccione una opción</option>
+                            <!-- Agregar opciones aquí -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="disciplina">Disciplina</label>
+                        <select id="disciplina" formControlName="disciplina">
+                            <option value="">Seleccione una opción</option>
+                            <!-- Agregar opciones aquí -->
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>¿Ha sido miembro del Sistema Veracruzano de Investigadores en ediciones anteriores, SVI?</label>
+                    <div>
+                        <input type="radio" id="sviSi" formControlName="miembroSVI" value="Si">
+                        <label for="sviSi">Sí</label>
+                        <input type="radio" id="sviNo" formControlName="miembroSVI" value="No">
+                        <label for="sviNo">No</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>¿Participó como estudiante en algún programa de Verano de la Investigación Científica?</label>
+                    <div>
+                        <input type="radio" id="veranoSi" formControlName="participoVerano" value="Si">
+                        <label for="veranoSi">Sí</label>
+                        <input type="radio" id="veranoNo" formControlName="participoVerano" value="No">
+                        <label for="veranoNo">No</label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="programaVerano">¿En que programa?</label>
+                        <input type="text" id="programaVerano" formControlName="programaVerano">
+                    </div>
+                    <div class="form-group">
+                        <label for="anioVerano">¿En que año?</label>
+                        <select id="anioVerano" formControlName="anioVerano">
+                            <option value="">Seleccione un año</option>
+                            <!-- Agregar opciones de años aquí -->
+                        </select>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="btn-guardar">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
+    </footer>
+
+</body>

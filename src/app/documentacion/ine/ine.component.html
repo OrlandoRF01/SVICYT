@@ -1,0 +1,49 @@
+<header>
+    <p>&copy; COVEICyDET</p>
+    <div class="timer">
+        Tiempo restante: {{ formatoTiempo() }}
+    </div>
+</header>
+
+<div class="card">
+    <div class="autoria-form">
+        <h2>Documentación > INE</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>INE</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let ine of ineList">
+                    <td>
+                        <img *ngIf="ine.imagen" [src]="ine.imagen" alt="INE" width="100">
+                    </td>
+                    <td>
+                        <button (click)="editarIne(ine)">Editar</button>
+                        <button (click)="eliminarIne(ine)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button (click)="mostrarModal()" class="btn-agregar">Agregar</button>
+    </div>
+</div>
+
+<div *ngIf="modalVisible" class="modal">
+    <div class="modal-content">
+        <h3>{{ modoEdicion ? 'Editar' : 'Agregar' }} INE</h3>
+        <form [formGroup]="ineForm" (ngSubmit)="guardarIne()">
+            <input type="file" (change)="onFileChange($event)" accept="image/*">
+            <div class="button-container">
+                <button type="submit">Guardar</button>
+                <button type="button" (click)="cerrarModal()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
+</footer>

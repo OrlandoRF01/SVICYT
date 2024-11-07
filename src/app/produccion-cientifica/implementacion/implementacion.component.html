@@ -1,0 +1,59 @@
+<header>
+    <p>&copy; COVEICyDET</p>
+    <div class="timer">
+        Tiempo restante: {{ formatoTiempo() }}
+    </div>
+</header>
+
+<div class="card">
+    <div class="autoria-form">
+        <h2>Producción Científica > Productos</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Nombre del producto</th>
+                    <th>No. de registro</th>
+                    <th>Fecha de registro</th>
+                    <th>Referencia</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let producto of productos">
+                    <td>{{ producto.tipo }}</td>
+                    <td>{{ producto.nombreProducto }}</td>
+                    <td>{{ producto.noRegistro }}</td>
+                    <td>{{ producto.fechaRegistro }}</td>
+                    <td>{{ producto.referencia }}</td>
+                    <td>
+                        <button (click)="editarProducto(producto)">Editar</button>
+                        <button (click)="eliminarProducto(producto)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button (click)="mostrarModal()" class="btn-agregar">Agregar</button>
+    </div>
+</div>
+
+<div *ngIf="modalVisible" class="modal">
+    <div class="modal-content">
+        <h3>{{ modoEdicion ? 'Editar' : 'Agregar' }} Producto</h3>
+        <form [formGroup]="productosForm" (ngSubmit)="guardarProducto()">
+            <input formControlName="tipo" placeholder="Tipo">
+            <input formControlName="nombreProducto" placeholder="Nombre del producto">
+            <input formControlName="noRegistro" placeholder="No. de registro">
+            <input formControlName="fechaRegistro" type="date" placeholder="Fecha de registro">
+            <input formControlName="referencia" placeholder="Referencia">
+            <div class="button-container">
+                <button type="submit">Guardar</button>
+                <button type="button" (click)="cerrarModal()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
+</footer>

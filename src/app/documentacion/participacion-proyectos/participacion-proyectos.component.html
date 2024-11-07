@@ -1,0 +1,50 @@
+<header>
+    <p>&copy; COVEICyDET</p>
+    <div class="timer">
+        Tiempo restante: {{ formatoTiempo() }}
+    </div>
+</header>
+
+<div class="card">
+    <div class="autoria-form">
+        <h2>Documentación > Documento probatorio participacion proyectos</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Documento probatorio participacion proyectos</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let documento of documentos">
+                    <td>{{ documento.nombre }}</td>
+                    <td>
+                        <button class="btn btn-primary me-2" (click)="abrirDocumento(documento)">
+                            Ver documento
+                        </button>
+                        <button (click)="eliminarDocumento(documento)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button (click)="mostrarModal()" class="btn-agregar">Subir Documento</button>
+    </div>
+</div>
+
+<div *ngIf="modalVisible" class="modal">
+    <div class="modal-content">
+        <h3>Subir Documento probatorio participacion proyectos</h3>
+        <form [formGroup]="documentoForm" (ngSubmit)="guardarDocumento()">
+            <input type="file" (change)="onFileChange($event)" accept=".pdf">
+            <div *ngIf="error" class="error">{{ error }}</div>
+            <div class="button-container">
+                <button type="submit" [disabled]="!documentoValido">Guardar</button>
+                <button type="button" (click)="cerrarModal()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
+</footer>

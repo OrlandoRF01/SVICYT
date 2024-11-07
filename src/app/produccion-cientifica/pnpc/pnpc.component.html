@@ -1,0 +1,75 @@
+<body>
+    <header>
+        <p>&copy; COVEICyDET</p>
+        <div class="timer">
+            Tiempo restante: {{ formatoTiempo() }}
+        </div>
+    </header>
+    
+    <div class="card">
+        <div class="autoria-form">
+            <h2>Producción Científica > Grados academicos en PNPC</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nivel</th>
+                        <th>Título</th>
+                        <th>Institución</th>
+                        <th>Año</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let pnpc of pnpcs">
+                        <td>{{ pnpc.nivel }}</td>
+                        <td>{{ pnpc.titulo }}</td>
+                        <td>{{ pnpc.institucion }}</td>
+                        <td>{{ pnpc.anio }}</td>
+                        <td>
+                            <button (click)="editarPnpc(pnpc)">Editar</button>
+                            <button (click)="eliminarPnpc(pnpc)">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button (click)="mostrarModal()" class="btn-agregar">Agregar</button>
+        </div>
+    </div>
+    
+    <div *ngIf="modalVisible" class="modal">
+        <div class="modal-content">
+            <h3>{{ modoEdicion ? 'Editar' : 'Agregar' }} Grado Academico en PNPC</h3>
+            <form [formGroup]="pnpcForm" (ngSubmit)="guardarPnpc()">
+                <diV>
+                    <label for="nivel">Nivel</label>
+                    <select formControlName="nivel">
+                        <option value="Licenciatura">Licenciatura</option>
+                        <option value="Maestría">Maestría</option>
+                        <option value="Doctorado">Doctorado</option>
+                    </select>
+                </diV>
+                <diV>
+                    <label for="titulo">Título</label>
+                    <input formControlName="titulo" placeholder="Título">
+                </diV>
+                <diV>
+                    <label for="institucion">Institución</label>
+                    <input formControlName="institucion" placeholder="Institución">
+                </diV>
+                <diV>
+                    <label for="anio">Año</label>
+                    <input formControlName="anio" type="number" placeholder="Año" min="1900" max="2100" step="1" pattern="\d{4}">
+                </diV>
+                <div class="button-container">
+                    <button type="submit">Guardar</button>
+                    <button type="button" (click)="cerrarModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
+    </footer>
+
+</body>

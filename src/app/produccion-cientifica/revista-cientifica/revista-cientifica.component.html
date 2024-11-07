@@ -1,0 +1,82 @@
+<body>
+    
+    <header>
+        <p>&copy; COVEICyDET</p>
+        <div class="timer">
+            Tiempo restante: {{ formatoTiempo() }}
+        </div>
+    </header>
+
+    <div class="card">
+        <div class="autoria-form">
+            <h2>Producción Científica > Artículos de revista de divulgacion científica</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Autor</th>
+                        <th>Fecha aceptado</th>
+                        <th>Fecha publicado</th>
+                        <th>Revista</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let articulo of articulos">
+                        <td>{{ articulo.titulo }}</td>
+                        <td>{{ articulo.autor }}</td>
+                        <td>{{ articulo.fechaAceptado }}</td>
+                        <td>{{ articulo.fechaPublicado }}</td>
+                        <td>{{ articulo.nombreRevista }}</td>
+                        <td>
+                            <button (click)="editarArticulo(articulo)">Editar</button>
+                            <button (click)="eliminarArticulo(articulo)">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button (click)="mostrarModal()" class="btn-agregar">Agregar</button>
+        </div>
+    </div>
+
+    <div *ngIf="modalVisible" class="modal">
+        <div class="modal-content">
+            <h3>{{ modoEdicion ? 'Editar' : 'Agregar' }} Artículo de divulgacion científica</h3>
+            <form [formGroup]="articulosForm" (ngSubmit)="guardarArticulo()">
+                <div>
+                    <label for="Título del artículo">Título del artículo</label>
+                    <input formControlName="titulo" placeholder="Título del artículo">
+                </div>
+                <div>
+                    <label for="autor">Autor o Coautor</label>
+                    <input formControlName="autor" placeholder="Autor o Coautor">
+                </div>
+                <div>
+                    <label for="fechaAceptado">Fecha aceptado</label>
+                    <input formControlName="fechaAceptado" type="date" placeholder="Fecha aceptado">
+                </div>
+                <div>
+                    <label for="fechaPublicado">Fecha publicado</label>
+                    <input formControlName="fechaPublicado" type="date" placeholder="Fecha publicado">
+                </div>
+                <div>
+                    <label for="nombreRevista">Nombre de la revista</label>
+                    <input formControlName="nombreRevista" placeholder="Nombre de la revista">
+                </div>
+                <div>
+                    <label for="referencia">Referencia</label>
+                    <input formControlName="referencia" placeholder="Referencia">
+                </div>
+                <div class="button-container">
+                    <button type="submit">Guardar</button>
+                    <button type="button" (click)="cerrarModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
+    </footer>
+
+</body>

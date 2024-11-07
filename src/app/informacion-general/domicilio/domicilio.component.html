@@ -1,0 +1,67 @@
+<body>
+    <header>
+        <p>&copy; COVEICyDET</p>
+        <div class="timer">
+            Tiempo restante: {{ formatoTiempo() }}
+        </div>
+    </header>
+    <div class="card">
+        <div class="contact-form">
+            <h2>Informacion general > Domicilio particular</h2>
+            <form [formGroup]="domicilioForm" (ngSubmit)="onSubmit()">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="codigoPostal">Código postal</label>
+                        <div class="input-group">
+                            <input type="text" id="codigoPostal" formControlName="codigoPostal">
+                            <button type="button" (click)="validarCodigoPostal()">Validar código</button>
+                        </div>
+                        <div *ngIf="codigoPostalError" class="error-message">
+                            No se reconoce mi código postal.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="calle">Calle</label>
+                        <input type="text" id="calle" formControlName="calle">
+                    </div>
+                    <div class="form-group">
+                        <label for="numero">Número</label>
+                        <input type="text" id="numero" formControlName="numero">
+                    </div>
+                    <div class="form-group">
+                        <label for="colonia">Colonia</label>
+                        <input type="text" id="colonia" formControlName="colonia">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="municipio">Municipio</label>
+                        <select id="municipio" formControlName="municipio">
+                            <option *ngFor="let municipio of municipios" [value]="municipio">{{ municipio }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="estado">Estado</label>
+                        <select id="estado" formControlName="estado" (change)="onEstadoChange()">
+                            <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="pais">País</label>
+                        <select id="pais" formControlName="pais" (change)="onPaisChange()">
+                            <option *ngFor="let pais of paises" [value]="pais">{{ pais }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="btn-guardar">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
+    </footer>
+</body>

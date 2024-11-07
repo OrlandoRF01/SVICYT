@@ -1,0 +1,55 @@
+<body>
+    <header>
+        <p>&copy; COVEICyDET</p>
+        <div class="timer">
+            Tiempo restante: {{ formatoTiempo() }}
+        </div>
+    </header>
+    <div class="card">
+        <div class="autoria-form">
+            <h2>Producción Científica > Autoria/Coautoria de libros</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Titulo</th>
+                        <th>Autor/Coautor</th>
+                        <th>Editorial</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let libro of libros">
+                        <td>{{ libro.titulo }}</td>
+                        <td>{{ libro.autor }}</td>
+                        <td>{{ libro.editorial }}</td>
+                        <td>
+                            <button (click)="editarLibro(libro)">Editar</button>
+                            <button (click)="eliminarLibro(libro)">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button (click)="mostrarModal()" class="btn-agregar">Agregar</button>
+        </div>
+    </div>
+    
+    <div *ngIf="modalVisible" class="modal">
+        <div class="modal-content">
+            <h3>{{ modoEdicion ? 'Editar' : 'Agregar' }} Libro</h3>
+            <form [formGroup]="libroForm" (ngSubmit)="guardarLibro()">
+                <input formControlName="titulo" placeholder="Título">
+                <input formControlName="autor" placeholder="Autor/Coautor">
+                <input formControlName="editorial" placeholder="Editorial">
+                <input formControlName="referencia" placeholder="Referencia">
+                <div class="button-container">
+                    <button type="submit">Guardar</button>
+                    <button type="button" (click)="cerrarModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
+    </footer>
+</body>

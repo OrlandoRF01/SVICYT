@@ -1,0 +1,54 @@
+<body>
+    <header>
+        <p>&copy; COVEICyDET</p>
+    </header>
+    <div class="registro-card">
+        <h2>Registro</h2>
+        <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
+            <div class="form-row">
+                <input type="text" placeholder="Nombre(s)" formControlName="nombres">   
+                <input type="text" placeholder="Apellido Paterno" formControlName="apellidoPaterno">
+                <input type="text" placeholder="Apellido Materno" formControlName="apellidoMaterno">         
+            </div>
+            <div class="form-row">
+                <p *ngIf="campoInvalido('nombres')">El nombre es obligatorio y solo puede contener letras.</p>
+                <p *ngIf="campoInvalido('apellidoPaterno')">El apellido paterno es obligatorio y solo puede contener letras.
+                </p>
+                <p *ngIf="campoInvalido('apellidoMaterno')">El apellido materno es obligatorio y solo puede contener letras.
+                </p>
+            </div>
+    
+            <div class="form-row">
+                <input type="text" placeholder="RFC" formControlName="rfc">   
+                <input type="email" placeholder="Correo electrónico" formControlName="correo">
+                <input type="email" placeholder="Confirmar Correo electrónico" formControlName="confirmarCorreo">
+                
+            </div>
+
+            <div class="form-row">
+                <p *ngIf="campoInvalido('rfc')">El RFC debe tener 13 caracteres válidos.</p>
+                <p *ngIf="campoInvalido('correo')">Ingresa un correo válido.</p>
+                <p *ngIf="campoInvalido('confirmarCorreo')">Los correos no coinciden.</p>
+
+            </div>
+    
+            <div class="form-row">
+                <input type="password" placeholder="Contraseña" formControlName="contrasena">
+                <input type="password" placeholder="Validación de contraseña" formControlName="validacionContrasena">
+            </div>
+
+            <div class="form-row">
+                <p *ngIf="campoInvalido('contrasena')">La contraseña debe tener al menos 8 caracteres.</p>
+                <p *ngIf="registroForm.hasError('mismatch') && registroForm.touched">Las contraseñas no coinciden.</p>
+            </div>
+    
+            <button type="submit" class="btn-registrarse">Registrarse</button>
+    
+            <p class="login-link">
+                Tengo una cuenta. <a (click)="irALogin()">Iniciar Sesión.</a>
+            </p>
+        </form>
+    </div>
+
+
+</body>
