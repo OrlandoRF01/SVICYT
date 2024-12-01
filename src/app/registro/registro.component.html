@@ -42,7 +42,13 @@
                 <p *ngIf="registroForm.hasError('mismatch') && registroForm.touched">Las contraseñas no coinciden.</p>
             </div>
     
-            <button type="submit" class="btn-registrarse">Registrarse</button>
+            <div class="error-message" *ngIf="errorMessage">
+                {{ errorMessage }}
+            </div>
+            
+            <button type="submit" class="btn-registrarse" [disabled]="loading">
+                {{ loading ? 'Registrando...' : 'Registrarse' }}
+            </button>
     
             <p class="login-link">
                 Tengo una cuenta. <a (click)="irALogin()">Iniciar Sesión.</a>

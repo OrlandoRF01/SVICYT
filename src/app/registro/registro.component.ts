@@ -2,18 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { UsuarioService } from './usuario.service';
+import { HttpClientModule } from '@angular/common/http'; 
 
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
+  providers: [UsuarioService], 
   templateUrl: './registro.component.html',
   styleUrls: ['./registro.component.css']
 })
 export class RegistroComponent implements OnInit {
   registroForm!: FormGroup;
+  errorMessage: string = '';
+  loading: boolean = false;
 
-  constructor(private fb: FormBuilder, private router: Router) { }
+  constructor(private fb: FormBuilder, private router: Router, private usuarioService: UsuarioService) { }
 
   ngOnInit() {
     this.initForm();
@@ -55,7 +60,29 @@ export class RegistroComponent implements OnInit {
 
   onSubmit() {
     if (this.registroForm.valid) {
-      console.log('Registro exitoso:', this.registroForm.value);
+      this.loading = true;
+      this.errorMessage = '';
+
+      this.usuarioService.registrarUsuario(this.registroForm.value)
+        .subscribe({
+          next: (response) => {
+            console.log('Registro exitoso:', response);
+            // Mostrar mensaje de éxito
+            alert('Usuario registrado exitosamente');
+            this.router.navigate(['/login']);
+          },
+          error: (error) => {
+            console.error('Error en el registro:', error);
+            this.loading = false;
+            this.errorMessage = 'Error al registrar usuario. Por favor, intente nuevamente.';
+            if (error.error && error.error.message) {
+              this.errorMessage = error.error.message;
+            }
+          },
+          complete: () => {
+            this.loading = false;
+          }
+        });
     } else {
       console.log('Formulario inválido');
       this.marcarFormularioTocado(this.registroForm);

@@ -48,5 +48,6 @@ export const routes: Routes = [
     { path: 'documentoProbatorioAdscripcionInstitucional', component: InscripcionInstitucionalComponent },
     { path: 'documentoProbatorioParticipacionProyectos', component: ParticipacionProyectosComponent }, 
     { path: 'documentoProbatorioProduccionCientifica', component: ProbatorioProduccionComponent },
+    { path: '**', redirectTo: 'registro' }
 
 ];
