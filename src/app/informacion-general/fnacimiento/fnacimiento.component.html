@@ -5,50 +5,76 @@
             Tiempo restante: {{ formatoTiempo() }}
         </div>
     </header>
-    <div class="card">
-        <div class="contact-form">
-            <h2>Informacion general > Lugar de nacimiento</h2>
-            <form [formGroup]="birthPlaceForm" (ngSubmit)="onSubmit()">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="pais">País</label>
-                        <input type="text" id="pais" formControlName="pais">
-                        <div *ngIf="isFieldInvalid('pais')" class="error-message">
-                            País es requerido.
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="estado">Estado</label>
-                        <input type="text" id="estado" formControlName="estado">
-                        <div *ngIf="isFieldInvalid('estado')" class="error-message">
-                            Estado es requerido.
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="ciudad">Ciudad</label>
-                        <input type="text" id="ciudad" formControlName="ciudad">
-                        <div *ngIf="isFieldInvalid('ciudad')" class="error-message">
-                            Ciudad es requerida.
-                        </div>
-                    </div>
+<div class="overlay" (click)="cerrarMenu()"></div>
+    
+    <button class="sidebar-btn" [class.oculto]="menuAbierto" (click)="toggleMenu()">☰</button>
+    
+    <div class="menu" [class.abierto]="menuAbierto">
+        <button (click)="navegarA('informacionGeneral')">Información General</button>
+        <div *ngIf="submenuAbierto" class="submenu">
+            <button (click)="navegarA('datosPersonales')">Datos Personales</button>
+            <button (click)="navegarA('fnacimiento')">Lugar de Nacimiento</button>
+            <button (click)="navegarA('domicilio')">Domicilio Particular</button>
+            <button (click)="navegarA('contacto')">Contacto</button>
+            <button (click)="navegarA('desarrollo')">Desarrollo</button>
+            <button (click)="navegarA('FormacionAcademica')">Formación Académica</button>
+        </div>
+        <button (click)="navegarA('produccionCientifica')">Producción Científica y/o Académica</button>
+        <button (click)="navegarA('documentos')">Documentos</button>
+        <button (click)="navegarA('guiaUsuario')">Guía de Usuario</button>
+        <button (click)="navegarA('logout')">LogOut</button>
+    </div>
+
+    <div class="main-container">
+        <div class="card">
+            <div class="contact-form">
+                <div class="encabezado-container">
+                    <button class="btn-regresar" (click)="navegarA('datosPersonales')">⬅</button>
+                    <h2>Informacion general > Lugar de nacimiento</h2>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="fechaNacimiento">Fecha de nacimiento</label>
-                        <input type="date" id="fechaNacimiento" formControlName="fechaNacimiento">
-                        <div *ngIf="isFieldInvalid('fechaNacimiento')" class="error-message">
-                            Fecha de nacimiento es requerida.
+                <form [formGroup]="birthPlaceForm" (ngSubmit)="onSubmit()">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="pais">País</label>
+                            <input type="text" id="pais" formControlName="pais">
+                            <div *ngIf="isFieldInvalid('pais')" class="error-message">
+                                País es requerido.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="estado">Estado</label>
+                            <input type="text" id="estado" formControlName="estado">
+                            <div *ngIf="isFieldInvalid('estado')" class="error-message">
+                                Estado es requerido.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ciudad">Ciudad</label>
+                            <input type="text" id="ciudad" formControlName="ciudad">
+                            <div *ngIf="isFieldInvalid('ciudad')" class="error-message">
+                                Ciudad es requerida.
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="numeroFM">No. FM (Extranjeros)</label>
-                        <input type="text" id="numeroFM" formControlName="numeroFM">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fechaNacimiento">Fecha de nacimiento</label>
+                            <input type="date" id="fechaNacimiento" formControlName="fechaNacimiento">
+                            <div *ngIf="isFieldInvalid('fechaNacimiento')" class="error-message">
+                                Fecha de nacimiento es requerida.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="numeroFM">No. FM (Extranjeros)</label>
+                            <input type="text" id="numeroFM" formControlName="numeroFM">
+                        </div>
                     </div>
-                </div>
-                <div class="button-container">
-                    <button type="submit" class="btn-guardar">Guardar</button>
-                </div>
-            </form>
+                    <div class="button-container">
+                        <button type="submit" class="btn-guardar">Guardar</button>
+                        <button (click)="navegarA('domicilio')" class="btn-siguiente">Siguiente</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     <footer>

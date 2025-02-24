@@ -5,45 +5,75 @@
     </div>
 </header>
 
-<div class="card">
-    <div class="autoria-form">
-        <h2>Documentación > INE</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>INE</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let ine of ineList">
-                    <td>
-                        <img *ngIf="ine.imagen" [src]="ine.imagen" alt="INE" width="100">
-                    </td>
-                    <td>
-                        <button (click)="editarIne(ine)">Editar</button>
-                        <button (click)="eliminarIne(ine)">Eliminar</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <button (click)="mostrarModal()" class="btn-agregar">Agregar</button>
+<div class="overlay" (click)="cerrarMenu()"></div>
+
+<button class="sidebar-btn" [class.oculto]="menuAbierto" (click)="toggleMenu()">☰</button>
+
+<div class="menu" [class.abierto]="menuAbierto">
+    <button (click)="navegarA('informacionGeneral')">Información General</button>
+    <button (click)="navegarA('produccionCientifica')">Producción Científica y/o Académica</button>
+    <button (click)="navegarA('documentos')">Documentos</button>
+    <div *ngIf="submenuAbierto" class="submenu">
+        <button (click)="navegarA('credencialINE')">INE</button>
+        <button (click)="navegarA('documentoProbatorioAdscripcionInstitucional')">Documento probatorio de
+            adscripción</button>
+        <button (click)="navegarA('documentoProbatorioParticipacionProyectos')">Documento probatorio participacion
+            proyectos</button>
+        <button (click)="navegarA('documentoProbatorioProduccionCientifica')">Documento probatorio produccion
+            cientifica</button>
     </div>
+    <button (click)="navegarA('guiaUsuario')">Guía de Usuario</button>
+    <button (click)="navegarA('logout')">LogOut</button>
 </div>
 
-<div *ngIf="modalVisible" class="modal">
-    <div class="modal-content">
-        <h3>{{ modoEdicion ? 'Editar' : 'Agregar' }} INE</h3>
-        <form [formGroup]="ineForm" (ngSubmit)="guardarIne()">
-            <input type="file" (change)="onFileChange($event)" accept="image/*">
-            <div class="button-container">
-                <button type="submit">Guardar</button>
-                <button type="button" (click)="cerrarModal()">Cancelar</button>
+<div class="main-container">
+
+    <div class="card">
+        <div class="autoria-form">
+            <h2>Documentación > INE</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>INE</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let ine of ineList">
+                        <td>
+                            <img *ngIf="ine.imagen" [src]="ine.imagen" alt="INE">
+                        </td>
+                        <td class="acciones">
+                            <div class="accion">
+                                <button (click)="editarIne(ine)">Editar</button>
+                            </div>
+                            <div class="accion">
+                                <button (click)="eliminarIne(ine)">Eliminar</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="button-inferior">
+                <button (click)="mostrarModal()" class="btn-agregar">Agregar</button>
+                <button (click)="navegarA('documentoProbatorioAdscripcionInstitucional')" class="btn-blanco">Siguiente</button>
             </div>
-        </form>
+        </div>
+    </div>
+
+    <div *ngIf="modalVisible" class="modal">
+        <div class="modal-content">
+            <h3>{{ modoEdicion ? 'Editar' : 'Agregar' }} INE</h3>
+            <form [formGroup]="ineForm" (ngSubmit)="guardarIne()">
+                <input type="file" (change)="onFileChange($event)" accept="image/*">
+                <div class="button-container">
+                    <button type="submit" class="btn-aceptar">Aceptar</button>
+                    <button type="button" class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-
 <footer>
     <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
 </footer>

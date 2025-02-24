@@ -1,36 +1,26 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SessionTimerService } from '../../session-timer.service';
-
-interface Documento {
-  nombre: string;
-  archivo: File;
-}
+import { SessionTimerService } from '../session-timer.service';
+import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-inscripcion-institucional',
+  selector: 'app-inicio-documentos',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './inscripcion-institucional.component.html',
-  styleUrls: ['./inscripcion-institucional.component.css']
+  imports: [CommonModule, FormsModule],
+  templateUrl: './inicio-documentos.component.html',
+  styleUrl: './inicio-documentos.component.css'
 })
-export class InscripcionInstitucionalComponent implements OnInit, OnDestroy {
+export class InicioDocumentosComponent implements OnInit, OnDestroy {
+  seccionActiva: string = 'documentos';
   tiempoRestante: number = 30 * 60;
   private tiempoSubscription: Subscription | undefined;
-  documentos: Documento[] = [];
-  documentoForm: FormGroup;
-  modalVisible = false;
-  documentoValido = false;
-  error: string | null = null;
 
-  seccionActiva: string = 'documento';
   menuAbierto: boolean = false;
   submenuAbierto: boolean = false;
 
-  documento = {
+  documentos = {
     credencialINE: '',
     documentoProbatorioAdscripcionInstitucional: '',
     documentoProbatorioParticipacionProyectos: '',
@@ -38,13 +28,7 @@ export class InscripcionInstitucionalComponent implements OnInit, OnDestroy {
     inicioProduccionCientifica: ''
   };
 
-  constructor(
-    private fb: FormBuilder,
-    private sessionTimerService: SessionTimerService,
-    private router: Router
-  ) {
-    this.documentoForm = this.fb.group({});
-  }
+  constructor(private sessionTimerService: SessionTimerService, private router: Router) { }
 
   ngOnInit() {
     this.tiempoSubscription = this.sessionTimerService.iniciarTemporizador().subscribe(
@@ -62,56 +46,6 @@ export class InscripcionInstitucionalComponent implements OnInit, OnDestroy {
     return this.sessionTimerService.formatoTiempo(this.tiempoRestante);
   }
 
-  mostrarModal() {
-    this.modalVisible = true;
-    this.documentoValido = false;
-    this.error = null;
-  }
-
-  cerrarModal() {
-    this.modalVisible = false;
-    this.error = null;
-  }
-
-  onFileChange(event: any) {
-    const file = event.target.files[0];
-    if (file && file.type === 'application/pdf') {
-      this.documentoValido = true;
-      this.error = null;
-    } else {
-      this.documentoValido = false;
-      this.error = "El archivo debe ser un PDF válido.";
-    }
-  }
-
-  guardarDocumento() {
-    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-    const file = fileInput?.files?.[0];
-
-    if (file && file.type === 'application/pdf') {
-      const nuevoDocumento: Documento = { nombre: file.name, archivo: file };
-      this.documentos.push(nuevoDocumento);
-      this.cerrarModal();
-    } else {
-      this.error = "El archivo debe ser un PDF válido.";
-    }
-  }
-
-  eliminarDocumento(documento: Documento) {
-    const index = this.documentos.indexOf(documento);
-    if (index > -1) {
-      this.documentos.splice(index, 1);
-    }
-  }
-
-  abrirDocumento(documento: Documento) {
-    const fileUrl = URL.createObjectURL(documento.archivo);
-    window.open(fileUrl, '_blank');
-    setTimeout(() => {
-      URL.revokeObjectURL(fileUrl);
-    }, 1000);
-  }
-
   cambiarSeccion(seccion: string) {
     this.seccionActiva = seccion;
   }
@@ -119,8 +53,8 @@ export class InscripcionInstitucionalComponent implements OnInit, OnDestroy {
   navegarAComponente(campo: string, seccion: string,) {
     this.seccionActiva = campo;
     this.cerrarMenu();
-    if (campo === 'documentoProbatorioAdscripcionInstitucional') {
-      this.router.navigate(['/documentoProbatorioAdscripcionInstitucional']);
+    if (campo === 'credencialINE') {
+      this.router.navigate(['/credencialINE']);
     }
   }
 
@@ -154,7 +88,7 @@ export class InscripcionInstitucionalComponent implements OnInit, OnDestroy {
   navegarA(seccion: string) {
     this.seccionActiva = seccion;
 
-    if (seccion === 'documento') {
+    if (seccion === 'documentos') {
       this.submenuAbierto = !this.submenuAbierto;
       return;
     }
@@ -165,7 +99,7 @@ export class InscripcionInstitucionalComponent implements OnInit, OnDestroy {
       case 'produccionCientifica':
         this.router.navigate(['/inicioProduccionCientifica']);
         break;
-      case 'documento':
+      case 'documentos':
         this.router.navigate(['/inicioDocumentos']);
         break;
       case 'credencialINE':

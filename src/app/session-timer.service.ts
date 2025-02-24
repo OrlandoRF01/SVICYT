@@ -1,21 +1,24 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SessionTimerService implements OnDestroy {
-  private tiempoRestante: BehaviorSubject<number> = new BehaviorSubject<number>(30 * 60); // 30 minutos en segundos
-  private intervalId: any;
+  private readonly DURACION_SESION = 30 * 60; // 30 minutos en segundos
+  private tiempoRestante = new BehaviorSubject<number>(this.DURACION_SESION);
+  private intervalId: any = null;
+  private tiempoSubscription: Subscription | null = null;
 
   constructor(private router: Router) { }
 
   iniciarTemporizador(): Observable<number> {
-    this.detenerTemporizador(); 
+    this.detenerTemporizador();
+    this.tiempoRestante.next(this.DURACION_SESION); // Reiniciar tiempo
 
     this.intervalId = setInterval(() => {
-      const nuevoTiempo = this.tiempoRestante.value - 1;
+      const nuevoTiempo = Math.max(this.tiempoRestante.value - 1, 0);
       this.tiempoRestante.next(nuevoTiempo);
 
       if (nuevoTiempo <= 0) {
@@ -29,12 +32,16 @@ export class SessionTimerService implements OnDestroy {
   detenerTemporizador() {
     if (this.intervalId) {
       clearInterval(this.intervalId);
+      this.intervalId = null;
     }
+  }
+
+  reiniciarTemporizador() {
+    this.tiempoRestante.next(this.DURACION_SESION);
   }
 
   cerrarSesion() {
     this.detenerTemporizador();
-   
     this.router.navigate(['/login']);
   }
 
@@ -46,5 +53,6 @@ export class SessionTimerService implements OnDestroy {
 
   ngOnDestroy() {
     this.detenerTemporizador();
+    this.tiempoSubscription?.unsubscribe();
   }
 }

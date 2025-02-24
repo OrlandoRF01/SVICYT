@@ -1,0 +1,56 @@
+<header>
+    <p>&copy; COVEICyDET</p>
+    <div class="timer">
+        Tiempo restante: {{ formatoTiempo() }}
+    </div>
+</header>
+
+<div class="overlay" (click)="cerrarMenu()"></div>
+
+<button class="sidebar-btn" [class.oculto]="menuAbierto" (click)="toggleMenu()">☰</button>
+
+<div class="menu" [class.abierto]="menuAbierto">
+    <button (click)="navegarA('informacionGeneral')">Información General</button>
+    <button (click)="navegarA('produccionCientifica')">Producción Científica y/o Académica</button>
+    <button (click)="navegarA('documentos')">Documentos</button>
+    <div *ngIf="submenuAbierto" class="submenu">
+        <button (click)="navegarA('credencialINE')">INE</button>
+        <button (click)="navegarA('documentoProbatorioAdscripcionInstitucional')">Documento probatorio de adscripción</button>
+        <button (click)="navegarA('documentoProbatorioParticipacionProyectos')">Documento probatorio participacion proyectos</button>
+        <button (click)="navegarA('documentoProbatorioProduccionCientifica')">Documento probatorio produccion cientifica</button>
+    </div>
+    <button (click)="navegarA('guiaUsuario')">Guía de Usuario</button>
+    <button (click)="navegarA('logout')">LogOut</button>
+</div>
+
+<div class="main-container">
+
+
+
+    <div class="card">
+        <div class="content" *ngIf="seccionActiva === 'documentos'">
+            <h2>Información General</h2>
+
+            <h3>INE</h3>
+            <p>{{ documentos.credencialINE || 'No hay información' }}</p>
+
+            <h3>Documento probatorio de adscripción</h3>
+            <p>{{ documentos.documentoProbatorioAdscripcionInstitucional || 'No hay información' }}</p>
+
+            <h3>Documento probatorio participacion proyectos</h3>
+            <p>{{ documentos.documentoProbatorioParticipacionProyectos || 'No hay información' }}</p>
+
+            <h3>Documento probatorio produccion cientifica</h3>
+            <p>{{ documentos.documentoProbatorioProduccionCientifica || 'No hay información' }}</p>
+
+            <div class="add-info">
+                <button class="empezar"
+                    (click)="navegarAComponente('credencialINE', 'documentos')">Empezar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
+</footer>

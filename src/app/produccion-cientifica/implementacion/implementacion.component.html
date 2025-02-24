@@ -5,55 +5,96 @@
     </div>
 </header>
 
-<div class="card">
-    <div class="autoria-form">
-        <h2>Producción Científica > Productos</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Tipo</th>
-                    <th>Nombre del producto</th>
-                    <th>No. de registro</th>
-                    <th>Fecha de registro</th>
-                    <th>Referencia</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let producto of productos">
-                    <td>{{ producto.tipo }}</td>
-                    <td>{{ producto.nombreProducto }}</td>
-                    <td>{{ producto.noRegistro }}</td>
-                    <td>{{ producto.fechaRegistro }}</td>
-                    <td>{{ producto.referencia }}</td>
-                    <td>
-                        <button (click)="editarProducto(producto)">Editar</button>
-                        <button (click)="eliminarProducto(producto)">Eliminar</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <button (click)="mostrarModal()" class="btn-agregar">Agregar</button>
+<div class="overlay" (click)="cerrarMenu()"></div>
+
+<button class="sidebar-btn" [class.oculto]="menuAbierto" (click)="toggleMenu()">☰</button>
+
+<div class="menu" [class.abierto]="menuAbierto">
+    <button (click)="navegarA('inicio')">Información General</button>
+    <button (click)="navegarA('produccionCientifica')">Producción Científica y/o Académica</button>
+    <div *ngIf="submenuAbierto" class="submenu">
+        <button (click)="navegarA('autoria')">Autoria/Coautoria de libros</button>
+        <button (click)="navegarA('proyectos')">Proyectos de investigación</button>
+        <button (click)="navegarA('patentes')">Patentes</button>
+        <button (click)="navegarA('articulosRevistaIndexada')">Articulos de revista indexada</button>
+        <button (click)="navegarA('articulosRevistaDivulgacionCientifica')">Articulos de revista de divulgacion
+            cientifica</button>
+        <button (click)="navegarA('implementacionTecnologica')">Implementación tecnologica</button>
+        <button (click)="navegarA('gradosAcademicosPNPC')">Grados academicos en PNPC</button>
+        <button (click)="navegarA('formaObtencionGrados')">Forma de obtencio de grados</button>
+        <button (click)="navegarA('sni')">SNI</button>
+        <button (click)="navegarA('estancias')">Estancias</button>
     </div>
+    <button (click)="navegarA('documentos')">Documentos</button>
+    <button (click)="navegarA('guiaUsuario')">Guía de Usuario</button>
+    <button (click)="navegarA('logout')">LogOut</button>
 </div>
 
-<div *ngIf="modalVisible" class="modal">
-    <div class="modal-content">
-        <h3>{{ modoEdicion ? 'Editar' : 'Agregar' }} Producto</h3>
-        <form [formGroup]="productosForm" (ngSubmit)="guardarProducto()">
-            <input formControlName="tipo" placeholder="Tipo">
-            <input formControlName="nombreProducto" placeholder="Nombre del producto">
-            <input formControlName="noRegistro" placeholder="No. de registro">
-            <input formControlName="fechaRegistro" type="date" placeholder="Fecha de registro">
-            <input formControlName="referencia" placeholder="Referencia">
-            <div class="button-container">
-                <button type="submit">Guardar</button>
-                <button type="button" (click)="cerrarModal()">Cancelar</button>
+<div class="main-container">
+    <div class="card">
+        <div class="autoria-form">
+            <div class="encabezado-container">
+                <button class="btn-regresar" (click)="navegarA('articulosRevistaDivulgacionCientifica')">⬅</button>
+                <h2>Producción Científica > Implementación tecnologica</h2>
+            </div>            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Nombre del producto</th>
+                        <th>No. de registro</th>
+                        <th>Fecha de registro</th>
+                        <th>Referencia</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let producto of productos">
+                        <td>{{ producto.tipo }}</td>
+                        <td>{{ producto.nombreProducto }}</td>
+                        <td>{{ producto.noRegistro }}</td>
+                        <td>{{ producto.fechaRegistro }}</td>
+                        <td>{{ producto.referencia }}</td>
+                        <td class="acciones">
+                            <div class="accion">
+                                <button (click)="editarProducto(producto)">Editar</button>
+                            </div>
+                            <div class="accion">
+                                <button (click)="eliminarProducto(producto)">Eliminar</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="button-borde">
+                <button (click)="mostrarModal()" class="btn-agregar">Agregar</button>
+                <button (click)="navegarA('gradosAcademicosPNPC')" class="btn-siguiente">Siguiente</button>
             </div>
-        </form>
+        </div>
+    </div>
+
+    <div *ngIf="modalVisible" class="modal">
+        <div class="modal-content">
+            <h3>{{ modoEdicion ? 'Editar' : 'Agregar' }} Producto</h3>
+            <form [formGroup]="productosForm" (ngSubmit)="guardarProducto()">
+                <label for="tipo">Tipo</label>
+                <input formControlName="tipo" placeholder="Tipo">
+                <label for="nombreProducto">Nombre del producto</label>
+                <input formControlName="nombreProducto" placeholder="Nombre del producto">
+                <label for="noRegistro">No. de registro</label>
+                <input formControlName="noRegistro" placeholder="No. de registro">
+                <label for="fechaRegistro">Fecha de registro</label>
+                <input formControlName="fechaRegistro" type="date" placeholder="Fecha de registro">
+                <label for="referencia">Referencia</label>
+                <input formControlName="referencia" placeholder="Referencia">
+                <div class="button-container">
+                    <button type="submit" class="btn-aceptar">Aceptar</button>
+                    <button type="button" class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-
 <footer>
     <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
 </footer>

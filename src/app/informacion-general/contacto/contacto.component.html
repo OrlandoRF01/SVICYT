@@ -6,60 +6,85 @@
             Tiempo restante: {{ formatoTiempo() }}
         </div>
     </header>
-    <div class="card">
-        <div class="contact-form">
-            <h2>Informacion general > Contacto</h2>
-            <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="correoParticular">Correo particular</label>
-                        <input type="email" id="correoParticular" formControlName="correoParticular">
-                        <div *ngIf="isFieldInvalid('correoParticular')" class="error-message">
-                            Correo particular es requerido y debe ser válido.
+
+    <button class="sidebar-btn" [class.oculto]="menuAbierto" (click)="toggleMenu()">☰</button>
+    
+    <div class="menu" [class.abierto]="menuAbierto">
+        <button (click)="navegarA('informacionGeneral')">Información General</button>
+        <div *ngIf="submenuAbierto" class="submenu">
+            <button (click)="navegarA('datosPersonales')">Datos Personales</button>
+            <button (click)="navegarA('fnacimiento')">Lugar de Nacimiento</button>
+            <button (click)="navegarA('domicilio')">Domicilio Particular</button>
+            <button (click)="navegarA('contacto')">Contacto</button>
+            <button (click)="navegarA('desarrollo')">Desarrollo</button>
+            <button (click)="navegarA('FormacionAcademica')">Formación Académica</button>
+        </div>
+        <button (click)="navegarA('produccionCientifica')">Producción Científica y/o Académica</button>
+        <button (click)="navegarA('documentos')">Documentos</button>
+        <button (click)="navegarA('guiaUsuario')">Guía de Usuario</button>
+        <button (click)="navegarA('logout')">LogOut</button>
+    </div>
+
+    <div class="main-container">
+        <div class="card">
+            <div class="contact-form">
+                <div class="encabezado-container">
+                    <button class="btn-regresar" (click)="navegarA('domicilio')">⬅</button>
+                    <h2>Informacion general > Contacto</h2>
+                </div>               
+                <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="correoParticular">Correo particular</label>
+                            <input type="email" id="correoParticular" formControlName="correoParticular">
+                            <div *ngIf="isFieldInvalid('correoParticular')" class="error-message">
+                                Correo particular es requerido y debe ser válido.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="correoInstitucional">Correo institucional</label>
+                            <input type="email" id="correoInstitucional" formControlName="correoInstitucional">
+                            <div *ngIf="isFieldInvalid('correoInstitucional')" class="error-message">
+                                Correo institucional es requerido y debe ser válido.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="telefonoPrincipal">Telefono principal</label>
+                            <input type="tel" id="telefonoPrincipal" formControlName="telefonoPrincipal">
+                            <div *ngIf="isFieldInvalid('telefonoPrincipal')" class="error-message">
+                                Teléfono principal es requerido.
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="correoInstitucional">Correo institucional</label>
-                        <input type="email" id="correoInstitucional" formControlName="correoInstitucional">
-                        <div *ngIf="isFieldInvalid('correoInstitucional')" class="error-message">
-                            Correo institucional es requerido y debe ser válido.
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="celular">Celular</label>
+                            <input type="tel" id="celular" formControlName="celular">
+                            <div *ngIf="isFieldInvalid('celular')" class="error-message">
+                                Celular es requerido.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="institucionLaboral">Institucion laboral</label>
+                            <input type="text" id="institucionLaboral" formControlName="institucionLaboral">
+                            <div *ngIf="isFieldInvalid('institucionLaboral')" class="error-message">
+                                Institución laboral es requerida.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="adscripcionEspecifica">Adscripcion especifica</label>
+                            <input type="text" id="adscripcionEspecifica" formControlName="adscripcionEspecifica">
+                            <div *ngIf="isFieldInvalid('adscripcionEspecifica')" class="error-message">
+                                Adscripción específica es requerida.
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="telefonoPrincipal">Telefono principal</label>
-                        <input type="tel" id="telefonoPrincipal" formControlName="telefonoPrincipal">
-                        <div *ngIf="isFieldInvalid('telefonoPrincipal')" class="error-message">
-                            Teléfono principal es requerido.
-                        </div>
+                    <div class="button-container">
+                        <button type="submit" class="btn-guardar">Guardar</button>
+                        <button (click)="navegarA('desarrollo')" class="btn-siguiente">Siguiente</button>
                     </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="celular">Celular</label>
-                        <input type="tel" id="celular" formControlName="celular">
-                        <div *ngIf="isFieldInvalid('celular')" class="error-message">
-                            Celular es requerido.
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="institucionLaboral">Institucion laboral</label>
-                        <input type="text" id="institucionLaboral" formControlName="institucionLaboral">
-                        <div *ngIf="isFieldInvalid('institucionLaboral')" class="error-message">
-                            Institución laboral es requerida.
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="adscripcionEspecifica">Adscripcion especifica</label>
-                        <input type="text" id="adscripcionEspecifica" formControlName="adscripcionEspecifica">
-                        <div *ngIf="isFieldInvalid('adscripcionEspecifica')" class="error-message">
-                            Adscripción específica es requerida.
-                        </div>
-                    </div>
-                </div>
-                <div class="button-container">
-                    <button type="submit" class="btn-guardar">Guardar</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
     <footer>

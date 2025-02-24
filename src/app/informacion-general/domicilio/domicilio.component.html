@@ -1,64 +1,81 @@
 <body>
     <header>
         <p>&copy; COVEICyDET</p>
-        <div class="timer">
-            Tiempo restante: {{ formatoTiempo() }}
-        </div>
+        <div class="timer">Tiempo restante: {{ formatoTiempo() }}</div>
     </header>
-    <div class="card">
-        <div class="contact-form">
-            <h2>Informacion general > Domicilio particular</h2>
-            <form [formGroup]="domicilioForm" (ngSubmit)="onSubmit()">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="codigoPostal">Código postal</label>
-                        <div class="input-group">
-                            <input type="text" id="codigoPostal" formControlName="codigoPostal">
-                            <button type="button" (click)="validarCodigoPostal()">Validar código</button>
+
+    <div class="overlay" (click)="cerrarMenu()"></div>
+    
+    <button class="sidebar-btn" [class.oculto]="menuAbierto" (click)="toggleMenu()">☰</button>
+    
+    <div class="menu" [class.abierto]="menuAbierto">
+        <button (click)="navegarA('informacionGeneral')">Información General</button>
+        <div *ngIf="submenuAbierto" class="submenu">
+            <button (click)="navegarA('datosPersonales')">Datos Personales</button>
+            <button (click)="navegarA('fnacimiento')">Lugar de Nacimiento</button>
+            <button (click)="navegarA('domicilio')">Domicilio Particular</button>
+            <button (click)="navegarA('contacto')">Contacto</button>
+            <button (click)="navegarA('desarrollo')">Desarrollo</button>
+            <button (click)="navegarA('FormacionAcademica')">Formación Académica</button>
+        </div>
+        <button (click)="navegarA('produccionCientifica')">Producción Científica y/o Académica</button>
+        <button (click)="navegarA('documentos')">Documentos</button>
+        <button (click)="navegarA('guiaUsuario')">Guía de Usuario</button>
+        <button (click)="navegarA('logout')">LogOut</button>
+    </div>
+
+    <div class="main-container">
+        <div class="card">
+            <div class="contact-form">
+                <div class="encabezado-container">
+                    <button class="btn-regresar" (click)="navegarA('fnacimiento')">⬅</button>
+                    <h2>Información general > Domicilio particular</h2>
+                </div>
+                <form [formGroup]="domicilioForm" (ngSubmit)="onSubmit()">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="codigoPostal">Código postal</label>
+                            <div class="input-group">
+                                <input type="text" id="codigoPostal" formControlName="codigoPostal">
+                                <a href="https://www.correosdemexico.gob.mx/SSLServicios/ConsultaCP/Descarga.aspx" target="_blank"
+                                    class="btn-validar">Consultar código</a>
+                            </div>
                         </div>
-                        <div *ngIf="codigoPostalError" class="error-message">
-                            No se reconoce mi código postal.
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="calle">Calle</label>
+                            <input type="text" id="calle" formControlName="calle">
+                        </div>
+                        <div class="form-group">
+                            <label for="numero">Número</label>
+                            <input type="text" id="numero" formControlName="numero">
+                        </div>
+                        <div class="form-group">
+                            <label for="colonia">Colonia</label>
+                            <input type="text" id="colonia" formControlName="colonia">
                         </div>
                     </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="calle">Calle</label>
-                        <input type="text" id="calle" formControlName="calle">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="municipio">Municipio</label>
+                            <input type="text" id="municipio" formControlName="municipio">
+                        </div>
+                        <div class="form-group">
+                            <label for="estado">Estado</label>
+                            <input type="text" id="estado" formControlName="estado">
+                        </div>
+                        <div class="form-group">
+                            <label for="pais">País</label>
+                            <input type="text" id="pais" formControlName="pais">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="numero">Número</label>
-                        <input type="text" id="numero" formControlName="numero">
+                    <div class="button-container">
+                        <button type="submit" class="btn-guardar">Guardar</button>
+                        <button (click)="navegarA('contacto')" class="btn-siguiente">Siguiente</button>
                     </div>
-                    <div class="form-group">
-                        <label for="colonia">Colonia</label>
-                        <input type="text" id="colonia" formControlName="colonia">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="municipio">Municipio</label>
-                        <select id="municipio" formControlName="municipio">
-                            <option *ngFor="let municipio of municipios" [value]="municipio">{{ municipio }}</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="estado">Estado</label>
-                        <select id="estado" formControlName="estado" (change)="onEstadoChange()">
-                            <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="pais">País</label>
-                        <select id="pais" formControlName="pais" (change)="onPaisChange()">
-                            <option *ngFor="let pais of paises" [value]="pais">{{ pais }}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="button-container">
-                    <button type="submit" class="btn-guardar">Guardar</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
     <footer>

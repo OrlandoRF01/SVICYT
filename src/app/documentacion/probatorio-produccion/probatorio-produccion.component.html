@@ -5,58 +5,74 @@
     </div>
 </header>
 
-<div class="card">
-    <div class="autoria-form">
-        <h2>Documentación > Documento probatorio produccion cientifica</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Documento probatorio produccion cientifica</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let documento of documentos">
-                    <td>{{ documento.nombre }}</td>
-                    <td>
-                        <button class="btn btn-primary me-2" (click)="abrirDocumento(documento)">
-                            Ver documento
-                        </button>
-                        <button (click)="eliminarDocumento(documento)">Eliminar</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <button (click)="mostrarModal()" class="btn-agregar">Subir Documento</button>
+<div class="overlay" (click)="cerrarMenu()"></div>
+
+<button class="sidebar-btn" [class.oculto]="menuAbierto" (click)="toggleMenu()">☰</button>
+
+<div class="menu" [class.abierto]="menuAbierto">
+    <button (click)="navegarA('informacionGeneral')">Información General</button>
+    <button (click)="navegarA('produccionCientifica')">Producción Científica y/o Académica</button>
+    <button (click)="navegarA('documento')">Documentos</button>
+    <div *ngIf="submenuAbierto" class="submenu">
+        <button (click)="navegarA('credencialINE')">INE</button>
+        <button (click)="navegarA('documentoProbatorioAdscripcionInstitucional')">Documento probatorio de
+            adscripción</button>
+        <button (click)="navegarA('documentoProbatorioParticipacionProyectos')">Documento probatorio participacion
+            proyectos</button>
+        <button (click)="navegarA('documentoProbatorioProduccionCientifica')">Documento probatorio produccion
+            cientifica</button>
     </div>
+    <button (click)="navegarA('guiaUsuario')">Guía de Usuario</button>
+    <button (click)="navegarA('logout')">LogOut</button>
 </div>
 
-<div class="modal" [class.show]="modalVisualizacionVisible"
-    [style.display]="modalVisualizacionVisible ? 'block' : 'none'">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{ documentoSeleccionado?.nombre }}</h5>
-                <button type="button" class="btn-close" (click)="cerrarVisualizador()"></button>
+<div class="main-container">
+    <div class="card">
+        <div class="autoria-form">
+            <div class="encabezado-container">
+                <button class="btn-regresar" (click)="navegarA('documentoProbatorioParticipacionProyectos')">⬅</button>
+                <h2>Documentación > Documento probatorio produccion cientifica</h2>
             </div>
-            <div class="modal-body">
-                <iframe *ngIf="urlDocumento" [src]="urlDocumento" width="100%" height="500px" frameborder="0"></iframe>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Documento probatorio produccion cientifica</th>
+                        <th>Ver documento</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let documento of documentos">
+                        <td>{{ documento.nombre }}</td>
+                        <td>
+                            <button class="btn btn-primary me-2" (click)="abrirDocumento(documento)">
+                                Ver documento
+                            </button>
+                        </td>
+                        <td><button (click)="eliminarDocumento(documento)">Eliminar</button></td>
+
+                    </tr>
+                </tbody>
+            </table>
+            <div class="button-inferior">
+                <button (click)="mostrarModal()" class="btn-agregar">Subir Documento</button>
+                <button (click)="navegarA('inicioDocumentos')" class="btn-blanco">Siguiente</button>
             </div>
         </div>
     </div>
-</div>
 
-<div *ngIf="modalVisible" class="modal">
-    <div class="modal-content">
-        <h3>Subir Documento probatorio produccion cientifica</h3>
-        <form [formGroup]="documentoForm" (ngSubmit)="guardarDocumento()">
-            <input type="file" (change)="onFileChange($event)" accept=".pdf">
-            <div *ngIf="error" class="error">{{ error }}</div>
-            <div class="button-container">
-                <button type="submit" [disabled]="!documentoValido">Guardar</button>
-                <button type="button" (click)="cerrarModal()">Cancelar</button>
-            </div>
-        </form>
+    <div *ngIf="modalVisible" class="modal">
+        <div class="modal-content">
+            <h3>SDocumento probatorio produccion cientifica</h3>
+            <form [formGroup]="documentoForm" (ngSubmit)="guardarDocumento()">
+                <input type="file" (change)="onFileChange($event)" accept=".pdf">
+                <div *ngIf="error" class="error">{{ error }}</div>
+                <div class="button-container">
+                    <button type="submit" [disabled]="!documentoValido">Guardar</button>
+                    <button type="button" (click)="cerrarModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

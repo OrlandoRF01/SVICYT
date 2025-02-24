@@ -5,35 +5,6 @@ import { Router } from '@angular/router';
 import { SessionTimerService } from '../session-timer.service';
 import { Subscription } from 'rxjs';
 
-interface InformacionGeneral {
-  datosPersonales: string;
-  lugarNacimiento: string;
-  domicilioParticular: string;
-  contacto: string;
-  desarrollo: string;
-  FormacionAcademica: string;
-}
-
-interface ProduccionCientifica {
-  autorCoautorLibros: string;
-  proyectosInvestigacion: string;
-  patentes: string;
-  articulosRevistaIndexada: string;
-  articulosRevistaDivulgacionCientifica: string;
-  implementacionTecnologica: string;
-  gradosAcademicosPNPC: string;
-  formaObtencionGrados: string;
-  SNI: string;
-  estancias: string;
-}
-
-interface Documentacion {
-  credencialINE: string;
-  documentoProbatorioAdscripcionInstitucional: string;
-  documentoProbatorioParticipacionProyectos: string;
-  documentoProbatorioProduccionCientifica: string;
-}
-
 @Component({
   selector: 'app-inicio',
   standalone: true,
@@ -43,9 +14,20 @@ interface Documentacion {
 })
 export class InicioComponent implements OnInit, OnDestroy {
   seccionActiva: string = 'informacionGeneral';
-  nuevaInformacion: string = '';
   tiempoRestante: number = 30 * 60;
   private tiempoSubscription: Subscription | undefined;
+
+  menuAbierto: boolean = false;
+  submenuAbierto: boolean = false;
+
+  informacionGeneral = {
+    datosPersonales: '',
+    lugarNacimiento: '',
+    domicilioParticular: '',
+    contacto: '',
+    desarrollo: '',
+    FormacionAcademica: ''
+  };
 
   constructor(private sessionTimerService: SessionTimerService, private router: Router) { }
 
@@ -65,104 +47,89 @@ export class InicioComponent implements OnInit, OnDestroy {
     return this.sessionTimerService.formatoTiempo(this.tiempoRestante);
   }
 
-  informacionGeneral: InformacionGeneral = {
-    datosPersonales: '',
-    lugarNacimiento: '',
-    domicilioParticular: '',
-    contacto: '',
-    desarrollo: '',
-    FormacionAcademica: ''
-  };
-
-  produccionCientifica: ProduccionCientifica = {
-    autorCoautorLibros: '',
-    proyectosInvestigacion: '',
-    patentes: '',
-    articulosRevistaIndexada: '',
-    articulosRevistaDivulgacionCientifica: '',
-    implementacionTecnologica: '',
-    gradosAcademicosPNPC: '',
-    formaObtencionGrados: '',
-    SNI: '',
-    estancias: ''
-  };
-
-  documentacion: Documentacion = {
-    credencialINE: '',
-    documentoProbatorioAdscripcionInstitucional: '',
-    documentoProbatorioParticipacionProyectos: '',
-    documentoProbatorioProduccionCientifica: ''
-  };
-
   cambiarSeccion(seccion: string) {
     this.seccionActiva = seccion;
   }
 
-  // Función para navegar a otro componente
-  navegarAComponente(campo: string, seccion: 'informacionGeneral' | 'produccionCientifica' | 'documentacion') {
-    switch (campo) {
-      case 'contacto':
-        this.router.navigate(['/contacto']);
+  navegarAComponente(campo: string, seccion: string,) {
+    this.seccionActiva = campo;
+    this.cerrarMenu();
+    if (campo === 'datosPersonales') {
+      this.router.navigate(['/dpersonales']);
+    }
+  }
+
+  toggleMenu() {
+    this.menuAbierto = !this.menuAbierto;
+    this.toggleOverlay();
+  }
+
+  toggleSubmenu() {
+    this.submenuAbierto = !this.submenuAbierto;
+  }
+
+  cerrarMenu() {
+    if (this.menuAbierto) {
+      this.menuAbierto = false;
+      this.toggleOverlay();
+    }
+  }
+
+  toggleOverlay() {
+    const overlay = document.querySelector('.overlay');
+    if (overlay) {
+      if (this.menuAbierto) {
+        overlay.classList.add('visible');
+      } else {
+        overlay.classList.remove('visible');
+      }
+    }
+  }
+
+  navegarA(seccion: string) {
+    this.seccionActiva = seccion;
+
+    if (seccion === 'informacionGeneral') {
+      this.submenuAbierto = !this.submenuAbierto;
+      return; 
+    }
+    switch (seccion) {
+      case 'informacionGeneral':
+        this.router.navigate(['/inicio']);
         break;
       case 'datosPersonales':
         this.router.navigate(['/dpersonales']);
+        break;
+      case 'fnacimiento':
+        this.router.navigate(['/fnacimiento']);
+        break;
+      case 'domicilio':
+        this.router.navigate(['/domicilio']);
+        break;
+      case 'contacto':
+        this.router.navigate(['/contacto']);
         break;
       case 'desarrollo':
         this.router.navigate(['/desarrollo']);
         break;
       case 'FormacionAcademica':
         this.router.navigate(['/FormacionAcademica']);
-        break;  
-      case 'domicilioParticular':
-        this.router.navigate(['/domicilio']);
         break;
-      case 'lugarNacimiento':
-        this.router.navigate(['/fnacimiento']);
+      case 'produccionCientifica':
+        this.router.navigate(['/inicioProduccionCientifica']);
         break;
-      case 'autorCoautorLibros':
-        this.router.navigate(['/autoria']);
+      case 'documentos':
+        this.router.navigate(['/inicioDocumentos']);
         break;
-      case 'proyectosInvestigacion':
-        this.router.navigate(['/proyectos']) 
+      case 'guiaUsuario':
+        this.router.navigate(['/guia-usuario']);
         break;
-      case 'patentes':
-        this.router.navigate(['/patentes']); 
+      case 'logout':
+        this.router.navigate(['/login']);
         break;
-      case 'articulosRevistaIndexada':
-        this.router.navigate(['/articulosRevistaIndexada']); 
-        break;
-      case 'articulosRevistaDivulgacionCientifica':
-        this.router.navigate(['/articulosRevistaDivulgacionCientifica']); 
-        break;
-      case 'implementacionTecnologica':
-        this.router.navigate(['/implementacionTecnologica']);  
-        break;
-      case 'gradosAcademicosPNPC':
-        this.router.navigate(['/gradosAcademicosPNPC']);   
-        break;
-      case 'formaObtencionGrados':
-        this.router.navigate(['/formaObtencionGrados']);    
-        break;
-      case 'SNI':
-        this.router.navigate(['/sni']); 
-        break;
-      case 'estancias':
-        this.router.navigate(['/estancias']);
-        break;
-      case 'credencialINE':
-        this.router.navigate(['/credencialINE']);
-        break;
-      case 'documentoProbatorioAdscripcionInstitucional':
-        this.router.navigate(['/documentoProbatorioAdscripcionInstitucional']);
-        break;
-      case 'documentoProbatorioParticipacionProyectos':
-        this.router.navigate(['/documentoProbatorioParticipacionProyectos']);
-        break;
-      case 'documentoProbatorioProduccionCientifica':
-        this.router.navigate(['/documentoProbatorioProduccionCientifica']);
-        break;
-      default:
-        console.error('Campo no reconocido:', campo);
     }
+
+    this.cerrarMenu(); 
   }
 }
+

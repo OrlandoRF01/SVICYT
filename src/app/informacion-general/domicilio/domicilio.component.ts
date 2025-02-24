@@ -4,8 +4,8 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SessionTimerService } from '../../session-timer.service';
+
 import { Subscription } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-domicilio',
@@ -18,13 +18,22 @@ export class DomicilioComponent implements OnInit, OnDestroy {
   domicilioForm!: FormGroup;
   tiempoRestante: number = 30 * 60;
   private tiempoSubscription: Subscription | undefined;
-
-  paises: string[] = ['México', 'Estados Unidos', 'Canadá'];
-  estados: string[] = [];
-  municipios: string[] = [];
   codigoPostalError: boolean = false;
 
-  constructor(private fb: FormBuilder, private sessionTimerService: SessionTimerService, private router: Router) { }
+  seccionActiva: string = 'informacionGeneral';
+  menuAbierto: boolean = false;
+  submenuAbierto: boolean = false;
+
+  informacionGeneral = {
+    datosPersonales: '',
+    lugarNacimiento: '',
+    domicilioParticular: '',
+    contacto: '',
+    desarrollo: '',
+    FormacionAcademica: ''
+  };
+
+  constructor(private fb: FormBuilder, private router: Router, private sessionTimerService: SessionTimerService) { }
 
   ngOnInit() {
     this.initForm();
@@ -56,42 +65,7 @@ export class DomicilioComponent implements OnInit, OnDestroy {
   }
 
   validarCodigoPostal() {
-    const codigoPostal = this.domicilioForm.get('codigoPostal')?.value;
-    if (!codigoPostal || !codigoPostal.startsWith('7')) {
-      this.codigoPostalError = true;
-    } else {
-      this.codigoPostalError = false;
-    }
-  }
-
-  onPaisChange() {
-    const paisSeleccionado = this.domicilioForm.get('pais')?.value;
-    if (paisSeleccionado === 'México') {
-      this.estados = ['Aguascalientes', 'Jalisco', 'Nuevo León'];
-    } else if (paisSeleccionado === 'Estados Unidos') {
-      this.estados = ['California', 'Texas', 'Florida'];
-    } else if (paisSeleccionado === 'Canadá') {
-      this.estados = ['Ontario', 'Quebec', 'British Columbia'];
-    } else {
-      this.estados = [];
-    }
-    this.domicilioForm.get('estado')?.setValue('');
-    this.municipios = [];
-    this.domicilioForm.get('municipio')?.setValue('');
-  }
-
-  onEstadoChange() {
-    const estadoSeleccionado = this.domicilioForm.get('estado')?.value;
-    if (estadoSeleccionado === 'Jalisco') {
-      this.municipios = ['Guadalajara', 'Zapopan', 'Tlaquepaque'];
-    } else if (estadoSeleccionado === 'Nuevo León') {
-      this.municipios = ['Monterrey', 'San Nicolás', 'Guadalupe'];
-    } else if (estadoSeleccionado === 'California') {
-      this.municipios = ['Los Ángeles', 'San Francisco', 'San Diego'];
-    } else {
-      this.municipios = [];
-    }
-    this.domicilioForm.get('municipio')?.setValue('');
+    window.open('https://www.correosdemexico.gob.mx/ConsultaCP', '_blank');
   }
 
   onSubmit() {
@@ -116,4 +90,90 @@ export class DomicilioComponent implements OnInit, OnDestroy {
     const field = this.domicilioForm.get(fieldName);
     return field!.invalid && (field!.dirty || field!.touched);
   }
+
+  cambiarSeccion(seccion: string) {
+    this.seccionActiva = seccion;
+  }
+
+  navegarAComponente(campo: string, seccion: string,) {
+    this.seccionActiva = campo;
+    this.cerrarMenu();
+    if (campo === 'datosPersonales') {
+      this.router.navigate(['/dpersonales']);
+    }
+  }
+
+  toggleMenu() {
+    this.menuAbierto = !this.menuAbierto;
+    this.toggleOverlay();
+  }
+
+  toggleSubmenu() {
+    this.submenuAbierto = !this.submenuAbierto;
+  }
+
+  cerrarMenu() {
+    if (this.menuAbierto) {
+      this.menuAbierto = false;
+      this.toggleOverlay();
+    }
+  }
+
+  toggleOverlay() {
+    const overlay = document.querySelector('.overlay');
+    if (overlay) {
+      if (this.menuAbierto) {
+        overlay.classList.add('visible');
+      } else {
+        overlay.classList.remove('visible');
+      }
+    }
+  }
+
+  navegarA(seccion: string) {
+    this.seccionActiva = seccion;
+
+    if (seccion === 'informacionGeneral') {
+      this.submenuAbierto = !this.submenuAbierto;
+      return;
+    }
+    switch (seccion) {
+      case 'informacionGeneral':
+        this.router.navigate(['/inicio']);
+        break;
+      case 'datosPersonales':
+        this.router.navigate(['/dpersonales']);
+        break;
+      case 'fnacimiento':
+        this.router.navigate(['/fnacimiento']);
+        break;
+      case 'domicilio':
+        this.router.navigate(['/domicilio']);
+        break;
+      case 'contacto':
+        this.router.navigate(['/contacto']);
+        break;
+      case 'desarrollo':
+        this.router.navigate(['/desarrollo']);
+        break;
+      case 'FormacionAcademica':
+        this.router.navigate(['/FormacionAcademica']);
+        break;
+      case 'produccionCientifica':
+        this.router.navigate(['/inicioProduccionCientifica']);
+        break;
+      case 'documentos':
+        this.router.navigate(['/inicioDocumentos']);
+        break;
+      case 'guiaUsuario':
+        this.router.navigate(['/guia-usuario']);
+        break;
+      case 'logout':
+        this.router.navigate(['/login']);
+        break;
+    }
+
+    this.cerrarMenu();
+  }
 }
+

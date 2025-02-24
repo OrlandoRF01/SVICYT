@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { SessionTimerService } from '../../session-timer.service';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 interface Documento {
   nombre: string;
@@ -19,20 +19,30 @@ interface Documento {
 })
 export class ProbatorioProduccionComponent implements OnInit, OnDestroy {
   tiempoRestante: number = 30 * 60;
-  private tiempoSubscription: Subscription | undefined;
-  documentos: Documento[] = [];
-  documentoForm: FormGroup;
-  modalVisible = false;
-  documentoValido = false;
-  error: string | null = null;
-  documentoSeleccionado: Documento | null = null;
-  urlDocumento: SafeUrl | null = null;
-  modalVisualizacionVisible = false;
+    private tiempoSubscription: Subscription | undefined;
+    documentos: Documento[] = [];
+    documentoForm: FormGroup;
+    modalVisible = false;
+    documentoValido = false;
+    error: string | null = null;
+  
+    seccionActiva: string = 'documento';
+    menuAbierto: boolean = false;
+    submenuAbierto: boolean = false;
+  
+    documento = {
+      credencialINE: '',
+      documentoProbatorioAdscripcionInstitucional: '',
+      documentoProbatorioParticipacionProyectos: '',
+      documentoProbatorioProduccionCientifica: '',
+      inicioProduccionCientifica: ''
+    };
+  
 
   constructor(
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
     private sessionTimerService: SessionTimerService,
-    private sanitizer: DomSanitizer
+    private router: Router
   ) {
     this.documentoForm = this.fb.group({});
   }
@@ -96,18 +106,89 @@ export class ProbatorioProduccionComponent implements OnInit, OnDestroy {
   }
 
   abrirDocumento(documento: Documento) {
-    this.documentoSeleccionado = documento;
     const fileUrl = URL.createObjectURL(documento.archivo);
-    this.urlDocumento = this.sanitizer.bypassSecurityTrustResourceUrl(fileUrl);
-    this.modalVisualizacionVisible = true;
+    window.open(fileUrl, '_blank');
+    setTimeout(() => {
+      URL.revokeObjectURL(fileUrl);
+    }, 1000);
   }
 
-  cerrarVisualizador() {
-    this.modalVisualizacionVisible = false;
-    this.documentoSeleccionado = null;
-    if (this.urlDocumento) {
-      URL.revokeObjectURL(this.urlDocumento as string);
+  cambiarSeccion(seccion: string) {
+    this.seccionActiva = seccion;
+  }
+
+  navegarAComponente(campo: string, seccion: string,) {
+    this.seccionActiva = campo;
+    this.cerrarMenu();
+    if (campo === 'documentoProbatorioProduccionCientifica') {
+      this.router.navigate(['/documentoProbatorioProduccionCientifica']);
     }
-    this.urlDocumento = null;
+  }
+
+  toggleMenu() {
+    this.menuAbierto = !this.menuAbierto;
+    this.toggleOverlay();
+  }
+
+  toggleSubmenu() {
+    this.submenuAbierto = !this.submenuAbierto;
+  }
+
+  cerrarMenu() {
+    if (this.menuAbierto) {
+      this.menuAbierto = false;
+      this.toggleOverlay();
+    }
+  }
+
+  toggleOverlay() {
+    const overlay = document.querySelector('.overlay');
+    if (overlay) {
+      if (this.menuAbierto) {
+        overlay.classList.add('visible');
+      } else {
+        overlay.classList.remove('visible');
+      }
+    }
+  }
+
+  navegarA(seccion: string) {
+    this.seccionActiva = seccion;
+
+    if (seccion === 'documento') {
+      this.submenuAbierto = !this.submenuAbierto;
+      return;
+    }
+    switch (seccion) {
+      case 'informacionGeneral':
+        this.router.navigate(['/inicio']);
+        break;
+      case 'produccionCientifica':
+        this.router.navigate(['/inicioProduccionCientifica']);
+        break;
+      case 'documento':
+        this.router.navigate(['/inicioDocumentos']);
+        break;
+      case 'credencialINE':
+        this.router.navigate(['/credencialINE']);
+        break;
+      case 'documentoProbatorioAdscripcionInstitucional':
+        this.router.navigate(['/documentoProbatorioAdscripcionInstitucional']);
+        break;
+      case 'documentoProbatorioParticipacionProyectos':
+        this.router.navigate(['/documentoProbatorioParticipacionProyectos']);
+        break;
+      case 'documentoProbatorioProduccionCientifica':
+        this.router.navigate(['/documentoProbatorioProduccionCientifica']);
+        break;
+      case 'guiaUsuario':
+        this.router.navigate(['/guia-usuario']);
+        break;
+      case 'logout':
+        this.router.navigate(['/login']);
+        break;
+    }
+
+    this.cerrarMenu();
   }
 }

@@ -5,129 +5,154 @@
             Tiempo restante: {{ formatoTiempo() }}
         </div>
     </header>
-    <div class="card">
-        <div class="proyectos-form">
-            <h2>Proyectos de Investigación</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Título</th>
-                        <th>Fecha Inicio</th>
-                        <th>Fecha Termino</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let proyecto of proyectos">
-                        <td>{{ proyecto.titulo }}</td>
-                        <td>{{ proyecto.fechaInicio }}</td>
-                        <td>{{ proyecto.fechaTermino }}</td>
-                        <td>
-                            <button (click)="editarProyecto(proyecto)">Editar</button>
-                            <button (click)="eliminarProyecto(proyecto)">Eliminar</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <button (click)="mostrarModal()" class="btn-agregar">Agregar</button>
-        </div>
-    </div>
+
+    <div class="overlay" (click)="cerrarMenu()"></div>
     
-    <div *ngIf="modalVisible" class="modal">
-        <div class="modal-content">
-            <h3>{{ modoEdicion ? 'Editar' : 'Agregar' }} Proyecto</h3>
-            <form [formGroup]="proyectoForm" (ngSubmit)="guardarProyecto()">
-                <div>
-                    <label for="referencia">Referencia</label>
-                    <input id="referencia" formControlName="referencia" placeholder="Referencia">
-                </div>
-                <div>
-                    <label for="titulo">Título</label>
-                    <input id="titulo" formControlName="titulo" placeholder="Título">
-                </div>
-                <div>
-                    <label for="participacion">Participación</label>
-                    <input id="participacion" formControlName="participacion" placeholder="Participación">
-                </div>
-                <div>
-                    <label for="fechaInicio">Fecha inicio</label>
-                    <input id="fechaInicio" formControlName="fechaInicio" type="date" placeholder="Fecha inicio">
-                </div>
-                <div>
-                    <label for="fechaTermino">Fecha término</label>
-                    <input id="fechaTermino" formControlName="fechaTermino" type="date" placeholder="Fecha término">
-                </div>
-                <div>
-                    <label for="area">Área</label>
-                    <input id="area" formControlName="area" placeholder="Área">
-                </div>
-                <div>
-                    <label for="institucionPrincipal">Institución principal</label>
-                    <input id="institucionPrincipal" formControlName="institucionPrincipal"
-                        placeholder="Institución principal">
-                </div>
-                <div>
-                    <label for="institucionesAsociadas">Instituciones asociadas</label>
-                    <input id="institucionesAsociadas" formControlName="institucionesAsociadas"
-                        placeholder="Instituciones asociadas">
-                </div>
-                <div>
-                    <label>Fuente de financiamiento:</label>
-                    <div>
-                        <label>
-                            <input type="checkbox" formControlName="fuenteGobFederal"> Gob. Federal
-                        </label>
-                        <label>
-                            <input type="checkbox" formControlName="fuenteGobEstatal"> Gob. Estatal
-                        </label>
-                        <label>
-                            <input type="checkbox" formControlName="fuenteConacyt"> CONACYT
-                        </label>
-                        <label>
-                            <input type="checkbox" formControlName="fuenteONG"> ONG
-                        </label>
-                        <label>
-                            <input type="checkbox" formControlName="fuenteFomix"> FOMIX
-                        </label>
-                        <label>
-                            <input type="checkbox" formControlName="fuenteInstitucion"> Institución perteneciente
-                        </label>
-                        <label>
-                            <input type="checkbox" formControlName="fuenteOtro"> Otro
-                        </label>
-                    </div>
-                </div>
-                <div>
-                    <label for="montoFinanciamiento">Monto del financiamiento</label>
-                    <input id="montoFinanciamiento" formControlName="montoFinanciamiento"
-                        placeholder="Monto del financiamiento">
-                </div>
-                <div>
-                    <label>Productos derivados:</label>
-                    <div>
-                        <label>
-                            <input type="checkbox" formControlName="reporteTecnico"> Reporte técnico
-                        </label>
-                        <label>
-                            <input type="checkbox" formControlName="prototipo"> Prototipo
-                        </label>
-                        <label>
-                            <input type="checkbox" formControlName="publicacion"> Publicación
-                        </label>
-                    </div>
-                </div>
-                <div>
-                    <label for="usuarios">Usuarios</label>
-                    <input id="usuarios" formControlName="usuarios" placeholder="Usuarios">
-                </div>
-                <div class="button-container">
-                    <button type="submit">Guardar</button>
-                    <button type="button" (click)="cerrarModal()">Cancelar</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    <button class="sidebar-btn" [class.oculto]="menuAbierto" (click)="toggleMenu()">☰</button>
     
+    <div class="menu" [class.abierto]="menuAbierto">
+        <button (click)="navegarA('inicio')">Información General</button>
+        <button (click)="navegarA('produccionCientifica')">Producción Científica y/o Académica</button>
+        <div *ngIf="submenuAbierto" class="submenu">
+            <button (click)="navegarA('autoria')">Autoria/Coautoria de libros</button>
+            <button (click)="navegarA('proyectos')">Proyectos de investigación</button>
+            <button (click)="navegarA('patentes')">Patentes</button>
+            <button (click)="navegarA('articulosRevistaIndexada')">Articulos de revista indexada</button>
+            <button (click)="navegarA('articulosRevistaDivulgacionCientifica')">Articulos de revista de divulgacion
+                cientifica</button>
+            <button (click)="navegarA('implementacionTecnologica')">Implementación tecnologica</button>
+            <button (click)="navegarA('gradosAcademicosPNPC')">Grados academicos en PNPC</button>
+            <button (click)="navegarA('formaObtencionGrados')">Forma de obtencio de grados</button>
+            <button (click)="navegarA('sni')">SNI</button>
+            <button (click)="navegarA('estancias')">Estancias</button>
+        </div>
+        <button (click)="navegarA('documentos')">Documentos</button>
+        <button (click)="navegarA('guiaUsuario')">Guía de Usuario</button>
+        <button (click)="navegarA('logout')">LogOut</button>
+    </div>
+
+    <div class="main-container">
+        <div class="card">
+            <div class="proyectos-form">
+                <div class="encabezado-container">
+                    <button class="btn-regresar" (click)="navegarA('autoria')">⬅</button>
+                    <h2>Producción Científica > Proyectos de Investigación</h2>
+                </div>                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Termino</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let proyecto of proyectos">
+                            <td>{{ proyecto.titulo }}</td>
+                            <td>{{ proyecto.fechaInicio }}</td>
+                            <td>{{ proyecto.fechaTermino }}</td>
+                            <td class="acciones">
+                                <div class="accion">
+                                    <button (click)="editarProyecto(proyecto)">Editar</button>
+                                </div>
+                                <div class="accion">
+                                    <button (click)="eliminarProyecto(proyecto)">Eliminar</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="button-borde">
+                    <button (click)="mostrarModal()" class="btn-agregar">Agregar</button>
+                    <button (click)="navegarA('patentes')" class="btn-siguiente">Siguiente</button>
+                </div>
+            </div>
+        </div>
+        
+        <div *ngIf="modalVisible" class="modal">
+            <div class="modal-content">
+                <h3>Proyectos de investigación</h3>
+                <form [formGroup]="proyectoForm" (ngSubmit)="guardarProyecto()">
+                    <div class="form-grid">
+                        <div>
+                            <label for="referencia">Referencia</label>
+                            <input id="referencia" formControlName="referencia" placeholder="Referencia">
+                        </div>
+                        <div>
+                            <label for="titulo">Título</label>
+                            <input id="titulo" formControlName="titulo" placeholder="Título">
+                        </div>
+                        <div>
+                            <label for="participacion">Participación</label>
+                            <input id="participacion" formControlName="participacion" placeholder="Participación">
+                        </div>
+                        <div>
+                            <label for="fechaInicio">Fecha inicio</label>
+                            <input id="fechaInicio" formControlName="fechaInicio" type="date">
+                        </div>
+                        <div>
+                            <label for="fechaTermino">Fecha término</label>
+                            <input id="fechaTermino" formControlName="fechaTermino" type="date">
+                        </div>
+                        <div>
+                            <label for="area">Área</label>
+                            <input id="area" formControlName="area" placeholder="Área">
+                        </div>
+                        <div>
+                            <label for="institucionPrincipal">Institución principal</label>
+                            <input id="institucionPrincipal" formControlName="institucionPrincipal"
+                                placeholder="Institución principal">
+                        </div>
+                        <div>
+                            <label for="institucionesAsociadas">Instituciones asociadas</label>
+                            <input id="institucionesAsociadas" formControlName="institucionesAsociadas"
+                                placeholder="Instituciones asociadas">
+                        </div>
+                    </div>
+        
+                    <div class="form-section">
+                        <label>Fuente de financiamiento</label>
+                        <div class="radio-group">
+                            <label *ngFor="let fuente of fuentesFinanciamiento">
+                                <input type="radio" formControlName="fuenteFinanciamiento" [value]="fuente"> {{ fuente }}
+                            </label>
+                        </div>
+                    </div>
+        
+                    <div class="form-grid">
+                        <div>
+                            <label for="montoFinanciamiento">Monto del financiamiento</label>
+                            <input id="montoFinanciamiento" formControlName="montoFinanciamiento"
+                                placeholder="Monto del financiamiento">
+                        </div>
+                    </div>
+        
+                    <div class="form-section">
+                        <label>Productos derivados</label>
+                        <div class="radio-group">
+                            <label *ngFor="let producto of productosDerivados">
+                                <input type="radio" formControlName="productoDerivado" [value]="producto"> {{ producto }}
+                            </label>
+                        </div>
+                    </div>
+        
+                    <div class="form-grid">
+                        <div>
+                            <label for="usuarios">Usuarios</label>
+                            <input id="usuarios" formControlName="usuarios" placeholder="Usuarios">
+                        </div>
+                    </div>
+        
+                    <div class="button-container">
+                        <button type="submit" class="btn-aceptar">Aceptar</button>
+                        <button type="button" class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
     <footer>
         <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
     </footer>

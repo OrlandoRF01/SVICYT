@@ -1,0 +1,80 @@
+<header>
+    <p>&copy; COVEICyDET</p>
+    <div class="timer">
+        Tiempo restante: {{ formatoTiempo() }}
+    </div>
+</header>
+
+<div class="overlay" (click)="cerrarMenu()"></div>
+
+<button class="sidebar-btn" [class.oculto]="menuAbierto" (click)="toggleMenu()">☰</button>
+
+<div class="menu" [class.abierto]="menuAbierto">
+    <button (click)="navegarA('inicio')">Información General</button>
+    <button (click)="navegarA('produccionCientifica')">Producción Científica y/o Académica</button>
+    <div *ngIf="submenuAbierto" class="submenu">
+        <button (click)="navegarA('autoria')">Autoria/Coautoria de libros</button>
+        <button (click)="navegarA('proyectos')">Proyectos de investigación</button>
+        <button (click)="navegarA('patentes')">Patentes</button>
+        <button (click)="navegarA('articulosRevistaIndexada')">Articulos de revista indexada</button>
+        <button (click)="navegarA('articulosRevistaDivulgacionCientifica')">Articulos de revista de divulgacion cientifica</button>
+        <button (click)="navegarA('implementacionTecnologica')">Implementación tecnologica</button>
+        <button (click)="navegarA('gradosAcademicosPNPC')">Grados academicos en PNPC</button>
+        <button (click)="navegarA('formaObtencionGrados')">Forma de obtencio de grados</button>
+        <button (click)="navegarA('sni')">SNI</button>
+        <button (click)="navegarA('estancias')">Estancias</button>
+    </div>
+    <button (click)="navegarA('documentos')">Documentos</button>
+    <button (click)="navegarA('guiaUsuario')">Guía de Usuario</button>
+    <button (click)="navegarA('logout')">LogOut</button>
+</div>
+
+<div class="main-container">
+
+
+
+    <div class="card">
+        <div class="content" *ngIf="seccionActiva === 'produccionCientifica'">
+            <h2>Producción Científica y/o Académica</h2>
+
+            <h3>Autoria/Coautoria de libros</h3>
+            <p>{{ produccionCientifica.autoria || 'No hay información' }}</p>
+
+            <h3>Proyectos de investigación</h3>
+            <p>{{ produccionCientifica.proyectos || 'No hay información' }}</p>
+
+            <h3>Patentes</h3>
+            <p>{{ produccionCientifica.patentes || 'No hay información' }}</p>
+
+            <h3>Articulos de revista indexada</h3>
+            <p>{{ produccionCientifica.articulosRevistaIndexada || 'No hay información' }}</p>
+
+            <h3>Articulos de revista de divulgacion cientifica</h3>
+            <p>{{ produccionCientifica.articulosRevistaDivulgacionCientifica || 'No hay información' }}</p>
+
+            <h3>Implementación tecnologica</h3>
+            <p>{{ produccionCientifica.implementacionTecnologica || 'No hay información' }}</p>
+
+            <h3>Grados academicos en PNPC</h3>
+            <p>{{ produccionCientifica.gradosAcademicosPNPC || 'No hay información' }}</p>
+
+            <h3>Forma de obtencio de grados</h3>
+            <p>{{ produccionCientifica.formaObtencionGrados || 'No hay información' }}</p>
+
+            <h3>SNI</h3>
+            <p>{{ produccionCientifica.sni || 'No hay información' }}</p>
+
+            <h3>Estancias</h3>
+            <p>{{ produccionCientifica.estancias || 'No hay información' }}</p>
+
+            <div class="add-info">
+                <button class="empezar"
+                    (click)="navegarAComponente('autoria', 'produccionCientifica')">Empezar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
+</footer>

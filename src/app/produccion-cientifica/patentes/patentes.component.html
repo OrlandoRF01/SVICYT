@@ -5,52 +5,93 @@
             Tiempo restante: {{ formatoTiempo() }}
         </div>
     </header>
-    <div class="card">
-        <div class="autoria-form">
-            <h2>Producción Científica > Patentes</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Tipo</th>
-                        <th>Nombre del proyecto</th>
-                        <th>No. registro</th>
-                        <th>Fecha registro</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let patente of patentes">
-                        <td>{{ patente.tipo }}</td>
-                        <td>{{ patente.nombreProyecto }}</td>
-                        <td>{{ patente.noRegistro }}</td>
-                        <td>{{ patente.fechaRegistro }}</td>
-                        <td>
-                            <button (click)="editarPatentes(patente)">Editar</button>
-                            <button (click)="eliminarPatentes(patente)">Eliminar</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <button (click)="mostrarModal()" class="btn-agregar">Agregar</button>
-        </div>
-    </div>
+
+    <div class="overlay" (click)="cerrarMenu()"></div>
     
-    <div *ngIf="modalVisible" class="modal">
-        <div class="modal-content">
-            <h3>{{ modoEdicion ? 'Editar' : 'Agregar' }} Patente</h3>
-            <form [formGroup]="patentesForm" (ngSubmit)="guardarPatentes()">
-                <input formControlName="tipo" placeholder="Tipo">
-                <input formControlName="nombreProyecto" placeholder="Nombre del proyecto">
-                <input formControlName="noRegistro" placeholder="No. registro">
-                <input formControlName="fechaRegistro" type="date" placeholder="Fecha registro">
-                <div class="button-container">
-                    <button type="submit">Guardar</button>
-                    <button type="button" (click)="cerrarModal()">Cancelar</button>
+    <button class="sidebar-btn" [class.oculto]="menuAbierto" (click)="toggleMenu()">☰</button>
+    
+    <div class="menu" [class.abierto]="menuAbierto">
+        <button (click)="navegarA('inicio')">Información General</button>
+        <button (click)="navegarA('produccionCientifica')">Producción Científica y/o Académica</button>
+        <div *ngIf="submenuAbierto" class="submenu">
+            <button (click)="navegarA('autoria')">Autoria/Coautoria de libros</button>
+            <button (click)="navegarA('proyectos')">Proyectos de investigación</button>
+            <button (click)="navegarA('patentes')">Patentes</button>
+            <button (click)="navegarA('articulosRevistaIndexada')">Articulos de revista indexada</button>
+            <button (click)="navegarA('articulosRevistaDivulgacionCientifica')">Articulos de revista de divulgacion
+                cientifica</button>
+            <button (click)="navegarA('implementacionTecnologica')">Implementación tecnologica</button>
+            <button (click)="navegarA('gradosAcademicosPNPC')">Grados academicos en PNPC</button>
+            <button (click)="navegarA('formaObtencionGrados')">Forma de obtencio de grados</button>
+            <button (click)="navegarA('sni')">SNI</button>
+            <button (click)="navegarA('estancias')">Estancias</button>
+        </div>
+        <button (click)="navegarA('documentos')">Documentos</button>
+        <button (click)="navegarA('guiaUsuario')">Guía de Usuario</button>
+        <button (click)="navegarA('logout')">LogOut</button>
+    </div>
+
+    <div class="main-container">
+        <div class="card">
+            <div class="autoria-form">
+                <div class="encabezado-container">
+                    <button class="btn-regresar" (click)="navegarA('proyectos')">⬅</button>
+                    <h2>Producción Científica > Patentes</h2>
                 </div>
-            </form>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Nombre del proyecto</th>
+                            <th>No. registro</th>
+                            <th>Fecha registro</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let patente of patentes">
+                            <td>{{ patente.tipo }}</td>
+                            <td>{{ patente.nombreProyecto }}</td>
+                            <td>{{ patente.noRegistro }}</td>
+                            <td>{{ patente.fechaRegistro }}</td>
+                            <td class="acciones">
+                                <div class="accion">
+                                    <button (click)="editarPatentes(patente)">Editar</button>
+                                </div>
+                                <div class="accion">
+                                    <button (click)="eliminarPatentes(patente)">Eliminar</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="button-borde">
+                    <button (click)="mostrarModal()" class="btn-agregar">Agregar</button>
+                    <button (click)="navegarA('articulosRevistaIndexada')" class="btn-siguiente">Siguiente</button>
+                </div>
+            </div>
+        </div>
+        
+        <div *ngIf="modalVisible" class="modal">
+            <div class="modal-content">
+                <h3>{{ modoEdicion ? 'Editar' : 'Agregar' }} Patente</h3>
+                <form [formGroup]="patentesForm" (ngSubmit)="guardarPatentes()">
+                    <label for="tipo">Tipo</label>
+                    <input formControlName="tipo" placeholder="Tipo">
+                    <label for="nombreProyecto">Nombre del proyecto</label>
+                    <input formControlName="nombreProyecto" placeholder="Nombre del proyecto">
+                    <label for="noRegistro">No. registro</label>
+                    <input formControlName="noRegistro" placeholder="No. registro">
+                    <label for="fechaRegistro">Fecha registro</label>
+                    <input formControlName="fechaRegistro" type="date" placeholder="Fecha registro">
+                    <div class="button-container">
+                        <button type="submit" class="btn-aceptar">Aceptar</button>
+                        <button type="button" class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    
     <footer>
         <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
     </footer>

@@ -5,6 +5,28 @@
             Tiempo restante: {{ formatoTiempo() }}
         </div>
     </header>
+
+    <div class="overlay" (click)="cerrarMenu()"></div>
+    
+    <button class="sidebar-btn" [class.oculto]="menuAbierto" (click)="toggleMenu()">☰</button>
+    
+    <div class="menu" [class.abierto]="menuAbierto">
+        <button (click)="navegarA('informacionGeneral')">Información General</button>
+        <div *ngIf="submenuAbierto" class="submenu">
+            <button (click)="navegarA('datosPersonales')">Datos Personales</button>
+            <button (click)="navegarA('fnacimiento')">Lugar de Nacimiento</button>
+            <button (click)="navegarA('domicilio')">Domicilio Particular</button>
+            <button (click)="navegarA('contacto')">Contacto</button>
+            <button (click)="navegarA('desarrollo')">Desarrollo</button>
+            <button (click)="navegarA('FormacionAcademica')">Formación Académica</button>
+        </div>
+        <button (click)="navegarA('produccionCientifica')">Producción Científica y/o Académica</button>
+        <button (click)="navegarA('documentos')">Documentos</button>
+        <button (click)="navegarA('guiaUsuario')">Guía de Usuario</button>
+        <button (click)="navegarA('logout')">LogOut</button>
+    </div>
+
+    <div class="main-container">
     <div class="card">
         <div class="contact-form">
             <h2>Informacion general > Datos personales</h2>
@@ -62,9 +84,11 @@
                 </div>
                 <div class="button-container">
                     <button type="submit" class="btn-guardar">Guardar</button>
+                    <button (click)="navegarA('fnacimiento')"class="btn-siguiente">Siguiente</button>
                 </div>
             </form>
         </div>
+    </div>
     </div>
     
     <footer>

@@ -3,59 +3,62 @@
     <div class="timer">
         Tiempo restante: {{ formatoTiempo() }}
     </div>
-    <div class="timer">
-        Tiempo restante: {{ formatoTiempo() }}
-    </div>
 </header>
-<div class="card">
-    
-    <div class="tabs">
-        <button [class.active]="seccionActiva === 'informacionGeneral'"
-            (click)="cambiarSeccion('informacionGeneral')">Información General</button>
-        <button [class.active]="seccionActiva === 'produccionCientifica'"
-            (click)="cambiarSeccion('produccionCientifica')">Producción Científica y/o Académica</button>
-        <button [class.active]="seccionActiva === 'documentacion'"
-            (click)="cambiarSeccion('documentacion')">Documentación</button>
-    </div>
 
-    <!-- Información General -->
-    <div class="content" *ngIf="seccionActiva === 'informacionGeneral'">
-        <h2>Información General</h2>
-        <div *ngFor="let item of informacionGeneral | keyvalue">
-            <h3>{{ item.key | titlecase }}</h3>
-            <p>{{ item.value || 'No hay información' }}</p>
-            <div class="add-info">
-                <button (click)="navegarAComponente(item.key, 'informacionGeneral')">Ir a {{ item.key | titlecase
-                    }}</button>
-            </div>
-        </div>
+<div class="overlay" (click)="cerrarMenu()"></div>
+
+<button class="sidebar-btn" [class.oculto]="menuAbierto" (click)="toggleMenu()">☰</button>
+
+<div class="menu" [class.abierto]="menuAbierto">
+    <button (click)="navegarA('informacionGeneral')">Información General</button>
+    <div *ngIf="submenuAbierto" class="submenu">
+        <button (click)="navegarA('datosPersonales')">Datos Personales</button>
+        <button (click)="navegarA('fnacimiento')">Lugar de Nacimiento</button>
+        <button (click)="navegarA('domicilio')">Domicilio Particular</button>
+        <button (click)="navegarA('contacto')">Contacto</button>
+        <button (click)="navegarA('desarrollo')">Desarrollo</button>
+        <button (click)="navegarA('FormacionAcademica')">Formación Académica</button>
     </div>
+    <button (click)="navegarA('produccionCientifica')">Producción Científica y/o Académica</button>
+    <button (click)="navegarA('documentos')">Documentos</button>
+    <button (click)="navegarA('guiaUsuario')">Guía de Usuario</button>
+    <button (click)="navegarA('logout')">LogOut</button>
+</div>
+
+<div class="main-container">
     
-    <!-- Producción Científica y/o Académica -->
-    <div class="content" *ngIf="seccionActiva === 'produccionCientifica'">
-        <h2>Producción Científica y/o Académica</h2>
-        <div *ngFor="let item of produccionCientifica | keyvalue">
-            <h3>{{ item.key | titlecase }}</h3>
-            <p>{{ item.value || 'No hay información' }}</p>
+
+
+    <div class="card">
+        <div class="content" *ngIf="seccionActiva === 'informacionGeneral'">
+            <h2>Información General</h2>
+
+            <h3>Datos Personales</h3>
+            <p>{{ informacionGeneral.datosPersonales || 'No hay información' }}</p>
+
+            <h3>Lugar de Nacimiento</h3>
+            <p>{{ informacionGeneral.lugarNacimiento || 'No hay información' }}</p>
+
+            <h3>Domicilio Particular</h3>
+            <p>{{ informacionGeneral.domicilioParticular || 'No hay información' }}</p>
+
+            <h3>Contacto</h3>
+            <p>{{ informacionGeneral.contacto || 'No hay información' }}</p>
+
+            <h3>Desarrollo</h3>
+            <p>{{ informacionGeneral.desarrollo || 'No hay información' }}</p>
+
+            <h3>Formación Académica</h3>
+            <p>{{ informacionGeneral.FormacionAcademica || 'No hay información' }}</p>
+
             <div class="add-info">
-                <button (click)="navegarAComponente(item.key, 'produccionCientifica')">Ir a {{ item.key | titlecase
-                    }}</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Documentación -->
-    <div class="content" *ngIf="seccionActiva === 'documentacion'">
-        <h2>Documentación</h2>
-        <div *ngFor="let item of documentacion | keyvalue">
-            <h3>{{ item.key | titlecase }}</h3>
-            <p>{{ item.value || 'No hay información' }}</p>
-            <div class="add-info">
-                <button (click)="navegarAComponente(item.key, 'documentacion')">Ir a {{ item.key | titlecase }}</button>
+                <button class="empezar"
+                    (click)="navegarAComponente('datosPersonales', 'informacionGeneral')">Empezar</button>
             </div>
         </div>
     </div>
 </div>
+
 <footer>
     <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
 </footer>

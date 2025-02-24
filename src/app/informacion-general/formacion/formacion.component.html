@@ -5,62 +5,92 @@
             Tiempo restante: {{ formatoTiempo() }}
         </div>
     </header>
+
+    <button class="sidebar-btn" [class.oculto]="menuAbierto" (click)="toggleMenu()">☰</button>
     
-    <div class="card">
-        <div class="autoria-form">
-            <h2>Informacion general > Formación Académica</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nivel</th>
-                        <th>Título</th>
-                        <th>Institución</th>
-                        <th>Año</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let formacion of formaciones">
-                        <td>{{ formacion.nivel }}</td>
-                        <td>{{ formacion.titulo }}</td>
-                        <td>{{ formacion.institucion }}</td>
-                        <td>{{ formacion.anio }}</td>
-                        <td>
-                            <button (click)="editarFormacion(formacion)">Editar</button>
-                            <button (click)="eliminarFormacion(formacion)">Eliminar</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <button (click)="mostrarModal()" class="btn-agregar">Agregar</button>
+    <div class="menu" [class.abierto]="menuAbierto">
+        <button (click)="navegarA('informacionGeneral')">Información General</button>
+        <div *ngIf="submenuAbierto" class="submenu">
+            <button (click)="navegarA('datosPersonales')">Datos Personales</button>
+            <button (click)="navegarA('fnacimiento')">Lugar de Nacimiento</button>
+            <button (click)="navegarA('domicilio')">Domicilio Particular</button>
+            <button (click)="navegarA('contacto')">Contacto</button>
+            <button (click)="navegarA('desarrollo')">Desarrollo</button>
+            <button (click)="navegarA('FormacionAcademica')">Formación Académica</button>
         </div>
+        <button (click)="navegarA('produccionCientifica')">Producción Científica y/o Académica</button>
+        <button (click)="navegarA('documentos')">Documentos</button>
+        <button (click)="navegarA('guiaUsuario')">Guía de Usuario</button>
+        <button (click)="navegarA('logout')">LogOut</button>
     </div>
-    
-    <div *ngIf="modalVisible" class="modal">
-        <div class="modal-content">
-            <h3>{{ modoEdicion ? 'Editar' : 'Agregar' }} Formación Académica</h3>
-            <form [formGroup]="formacionesForm" (ngSubmit)="guardarFormacion()">
-                <label for="nivel">Nivel</label>
-                <select formControlName="nivel">
-                    <option value="">Seleccione el nivel</option>
-                    <option value="Licenciatura">Licenciatura</option>
-                    <option value="Maestría">Maestría</option>
-                    <option value="Doctorado">Doctorado</option>
-                </select>
-                <label for="titulo">Título</label>
-                <input formControlName="titulo" placeholder="Título">
-                <label for="institucion">Institución</label>
-                <input formControlName="institucion" placeholder="Institución">
-                <label for="anio">Año</label>
-                <input formControlName="anio" type="number" placeholder="Año" min="1900" max="2100" step="1" pattern="\d{4}">
-                <div class="button-container">
-                    <button type="submit">Guardar</button>
-                    <button type="button" (click)="cerrarModal()">Cancelar</button>
+
+    <div class="main-container">
+        <div class="card">
+            <div class="autoria-form">
+                <div class="encabezado-container">
+                    <button class="btn-regresar" (click)="navegarA('desarrollo')">⬅</button>
+                    <h2>Informacion general > Formación Académica</h2>
+                </div>                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nivel</th>
+                            <th>Título</th>
+                            <th>Institución</th>
+                            <th>Año</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let formacion of formaciones">
+                            <td>{{ formacion.nivel }}</td>
+                            <td>{{ formacion.titulo }}</td>
+                            <td>{{ formacion.institucion }}</td>
+                            <td>{{ formacion.anio }}</td>
+                            <td class="acciones">
+                                <div class="accion">
+                                    <button (click)="editarFormacion(formacion)">Editar</button>
+                                </div>
+                                <div class="accion">
+                                    <button (click)="eliminarFormacion(formacion)">Eliminar</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="button-borde">
+                    <button (click)="mostrarModal()" class="btn-agregar">Agregar</button>
+                    <button (click)="navegarA('inicio')" class="btn-siguiente">Finalizar</button>
                 </div>
-            </form>
+            </div>
+        </div>
+        
+        <div *ngIf="modalVisible" class="modal">
+            <div class="modal-content">
+                <h3>{{ modoEdicion ? 'Editar' : 'Agregar' }} Formación Académica</h3>
+                <form [formGroup]="formacionesForm" (ngSubmit)="guardarFormacion()">
+                    <label for="nivel">Nivel</label>
+                    <select formControlName="nivel">
+                        <option value="">Seleccione el nivel</option>
+                        <option value="Licenciatura">Licenciatura</option>
+                        <option value="Maestría">Maestría</option>
+                        <option value="Doctorado">Doctorado</option>
+                    </select>
+                    <label for="titulo">Título</label>
+                    <input formControlName="titulo" placeholder="Título">
+                    <label for="institucion">Institución</label>
+                    <input formControlName="institucion" placeholder="Institución">
+                    <label for="anio">Año</label>
+                    <input formControlName="anio" type="number" placeholder="Año" min="1900" max="2100" step="1" pattern="\d{4}">
+                    <div class="button-container">
+                        <button type="submit" class="btn-aceptar">Aceptar</button>
+                        <button type="button" class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    
     <footer>
         <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
     </footer>

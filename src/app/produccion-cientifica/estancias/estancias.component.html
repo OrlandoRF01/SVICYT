@@ -7,65 +7,100 @@
         </div>
     </header>
 
-    <div class="card">
-        <div class="estancia-form">
-            <h2>Producción Científica > Registro de Estancias</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Institución</th>
-                        <th>Proyecto</th>
-                        <th>Fecha de inicio</th>
-                        <th>Fecha de término</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let estancia of estancias">
-                        <td>{{ estancia.institucion }}</td>
-                        <td>{{ estancia.proyecto }}</td>
-                        <td>{{ estancia.fechaInicio }}</td>
-                        <td>{{ estancia.fechaTermino }}</td>
-                        <td>
-                            <button (click)="editarEstancia(estancia)">Editar</button>
-                            <button (click)="eliminarEstancia(estancia)">Eliminar</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <button (click)="mostrarModal()" class="btn-agregar">Agregar</button>
+    <div class="overlay" (click)="cerrarMenu()"></div>
+    
+    <button class="sidebar-btn" [class.oculto]="menuAbierto" (click)="toggleMenu()">☰</button>
+    
+    <div class="menu" [class.abierto]="menuAbierto">
+        <button (click)="navegarA('inicio')">Información General</button>
+        <button (click)="navegarA('produccionCientifica')">Producción Científica y/o Académica</button>
+        <div *ngIf="submenuAbierto" class="submenu">
+            <button (click)="navegarA('autoria')">Autoria/Coautoria de libros</button>
+            <button (click)="navegarA('proyectos')">Proyectos de investigación</button>
+            <button (click)="navegarA('patentes')">Patentes</button>
+            <button (click)="navegarA('articulosRevistaIndexada')">Articulos de revista indexada</button>
+            <button (click)="navegarA('articulosRevistaDivulgacionCientifica')">Articulos de revista de divulgacion
+                cientifica</button>
+            <button (click)="navegarA('implementacionTecnologica')">Implementación tecnologica</button>
+            <button (click)="navegarA('gradosAcademicosPNPC')">Grados academicos en PNPC</button>
+            <button (click)="navegarA('formaObtencionGrados')">Forma de obtencio de grados</button>
+            <button (click)="navegarA('sni')">SNI</button>
+            <button (click)="navegarA('estancias')">Estancias</button>
         </div>
+        <button (click)="navegarA('documentos')">Documentos</button>
+        <button (click)="navegarA('guiaUsuario')">Guía de Usuario</button>
+        <button (click)="navegarA('logout')">LogOut</button>
     </div>
 
+    <div class="main-container">
+        <div class="card">
+            <div class="estancia-form">
+                <div class="encabezado-container">
+                    <button class="btn-regresar" (click)="navegarA('sni')">⬅</button>
+                    <h2>Producción Científica > Registro de Estancias</h2>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Institución</th>
+                            <th>Proyecto</th>
+                            <th>Fecha de inicio</th>
+                            <th>Fecha de término</th>
+                            <th>Documento</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let estancia of estancias">
+                            <td>{{ estancia.institucion }}</td>
+                            <td>{{ estancia.proyecto }}</td>
+                            <td>{{ estancia.fechaInicio }}</td>
+                            <td>{{ estancia.fechaTermino }}</td>
+                            <td>{{ estancia.nombreArchivo }}</td>
+                            <td class="acciones">
+                                <div class="accion">
+                                    <button *ngIf="estancia.documento" (click)="verDocumento(estancia.documento)">Ver Documento</button>
+                                </div>
+                                <div class="accion">
+                                    <button (click)="editarEstancia(estancia)">Editar</button>
+                                </div>
+                                <div class="accion">
+                                    <button (click)="eliminarEstancia(estancia)">Eliminar</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="button-borde">
+                    <button (click)="mostrarModal()" class="btn-agregar">Agregar</button>
+                    <button (click)="navegarA('produccionCientifica')" class="btn-siguiente">Siguiente</button>
+                </div>
+            </div>
+        </div>
 
-    <div *ngIf="modalVisible" class="modal">
-        <div class="modal-content">
-            <h3>{{ modoEdicion ? 'Editar' : 'Agregar' }} Estancia</h3>
-            <form [formGroup]="estanciasForm" (ngSubmit)="guardarEstancia()">
-                <div>
+
+        <div *ngIf="modalVisible" class="modal">
+            <div class="modal-content">
+                <h3>{{ modoEdicion ? 'Editar' : 'Agregar' }} Estancia</h3>
+                <form [formGroup]="estanciasForm" (ngSubmit)="guardarEstancia()">
                     <label for="Institución">Institución</label>
                     <input formControlName="institucion" placeholder="Institución">
-                </div>
-                <div>
                     <label for="proyecto">Proyecto</label>
                     <input formControlName="proyecto" placeholder="Proyecto">
-                </div>
-                <div>
                     <label for="fechaInicio">Fecha de inicio</label>
                     <input formControlName="fechaInicio" type="date" placeholder="Fecha de inicio">
-                </div>
-                <div>
                     <label for="fechaTermino">Fecha de término</label>
                     <input formControlName="fechaTermino" type="date" placeholder="Fecha de término">
-                </div>
-                <div class="button-container">
-                    <button type="submit">Guardar</button>
-                    <button type="button" (click)="cerrarModal()">Cancelar</button>
-                </div>
-            </form>
+                    <label for="documento">Documento</label>
+                    <input type="file" (change)="onFileSelected($event)" accept="application/pdf">
+                    <div class="button-container">
+                        <button type="submit" class="btn-aceptar">Aceptar</button>
+                        <button type="button" class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-
     <footer>
         <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
     </footer>

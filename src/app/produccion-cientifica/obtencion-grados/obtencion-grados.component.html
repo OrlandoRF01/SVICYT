@@ -5,62 +5,99 @@
             Tiempo restante: {{ formatoTiempo() }}
         </div>
     </header>
+
+    <div class="overlay" (click)="cerrarMenu()"></div>
     
-    <div class="card">
-        <div class="autoria-form">
-            <h2>Producción Científica > Obtención de Grados</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nivel</th>
-                        <th>Título</th>
-                        <th>Institución</th>
-                        <th>Año</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let grado of grados">
-                        <td>{{ grado.nivel }}</td>
-                        <td>{{ grado.titulo }}</td>
-                        <td>{{ grado.institucion }}</td>
-                        <td>{{ grado.ano }}</td>
-                        <td>
-                            <button (click)="editarGrado(grado)">Editar</button>
-                            <button (click)="eliminarGrado(grado)">Eliminar</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <button (click)="mostrarModal()" class="btn-agregar">Agregar</button>
+    <button class="sidebar-btn" [class.oculto]="menuAbierto" (click)="toggleMenu()">☰</button>
+    
+    <div class="menu" [class.abierto]="menuAbierto">
+        <button (click)="navegarA('inicio')">Información General</button>
+        <button (click)="navegarA('produccionCientifica')">Producción Científica y/o Académica</button>
+        <div *ngIf="submenuAbierto" class="submenu">
+            <button (click)="navegarA('autoria')">Autoria/Coautoria de libros</button>
+            <button (click)="navegarA('proyectos')">Proyectos de investigación</button>
+            <button (click)="navegarA('patentes')">Patentes</button>
+            <button (click)="navegarA('articulosRevistaIndexada')">Articulos de revista indexada</button>
+            <button (click)="navegarA('articulosRevistaDivulgacionCientifica')">Articulos de revista de divulgacion
+                cientifica</button>
+            <button (click)="navegarA('implementacionTecnologica')">Implementación tecnologica</button>
+            <button (click)="navegarA('gradosAcademicosPNPC')">Grados academicos en PNPC</button>
+            <button (click)="navegarA('formaObtencionGrados')">Forma de obtencio de grados</button>
+            <button (click)="navegarA('sni')">SNI</button>
+            <button (click)="navegarA('estancias')">Estancias</button>
         </div>
+        <button (click)="navegarA('documentos')">Documentos</button>
+        <button (click)="navegarA('guiaUsuario')">Guía de Usuario</button>
+        <button (click)="navegarA('logout')">LogOut</button>
     </div>
     
-    <div *ngIf="modalVisible" class="modal">
-        <div class="modal-content">
-            <h3>{{ modoEdicion ? 'Editar' : 'Agregar' }} Grado</h3>
-            <form [formGroup]="gradosForm" (ngSubmit)="guardarGrado()">
-                <label for="nivel">Nivel</label>
-                <select formControlName="nivel">
-                    <option value="">Seleccione el nivel</option>
-                    <option value="Licenciatura">Licenciatura</option>
-                    <option value="Maestría">Maestría</option>
-                    <option value="Doctorado">Doctorado</option>
-                </select>
-                <label for="titulo">Título</label>
-                <input formControlName="titulo" placeholder="Título">
-                <label for="institucion">Institución</label>
-                <input formControlName="institucion" placeholder="Institución">
-                <label for="anio">Año</label>
-                <input formControlName="ano" type="number" placeholder="Año" min="1900" max="2100" step="1" pattern="\d{4}">
-                <div class="button-container">
-                    <button type="submit">Guardar</button>
-                    <button type="button" (click)="cerrarModal()">Cancelar</button>
+    <div class="main-container">
+    
+        <div class="card">
+            <div class="autoria-form">
+                <div class="encabezado-container">
+                    <button class="btn-regresar" (click)="navegarA('gradosAcademicosPNPC')">⬅</button>
+                    <h2>Producción Científica > Obtención de Grados</h2>
                 </div>
-            </form>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nivel</th>
+                            <th>Título</th>
+                            <th>Institución</th>
+                            <th>Año</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let grado of grados">
+                            <td>{{ grado.nivel }}</td>
+                            <td>{{ grado.titulo }}</td>
+                            <td>{{ grado.institucion }}</td>
+                            <td>{{ grado.ano }}</td>
+                            <td class="acciones">
+                                <div class="accion">
+                                    <button (click)="editarGrado(grado)">Editar</button>
+                                </div>
+                                <div class="accion">
+                                    <button (click)="eliminarGrado(grado)">Eliminar</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="button-borde">
+                    <button (click)="mostrarModal()" class="btn-agregar">Agregar</button>
+                    <button (click)="navegarA('sni')" class="btn-siguiente">Siguiente</button>
+                </div>
+            </div>
+        </div>
+        
+        <div *ngIf="modalVisible" class="modal">
+            <div class="modal-content">
+                <h3>{{ modoEdicion ? 'Editar' : 'Agregar' }} Grado</h3>
+                <form [formGroup]="gradosForm" (ngSubmit)="guardarGrado()">
+                    <label for="nivel">Nivel</label>
+                    <select formControlName="nivel">
+                        <option value="">Seleccione el nivel</option>
+                        <option value="Licenciatura">Licenciatura</option>
+                        <option value="Maestría">Maestría</option>
+                        <option value="Doctorado">Doctorado</option>
+                    </select>
+                    <label for="titulo">Título</label>
+                    <input formControlName="titulo" placeholder="Título">
+                    <label for="institucion">Institución</label>
+                    <input formControlName="institucion" placeholder="Institución">
+                    <label for="anio">Año</label>
+                    <input formControlName="ano" type="number" placeholder="Año" min="1900" max="2100" step="1" pattern="\d{4}">
+                    <div class="button-container">
+                        <button type="submit" class="btn-aceptar">Aceptar</button>
+                        <button type="button" class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    
     <footer>
         <p>&copy; COVEICyDET | 2022 | Todos los derechos reservados</p>
     </footer>

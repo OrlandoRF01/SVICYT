@@ -5,47 +5,87 @@
             Tiempo restante: {{ formatoTiempo() }}
         </div>
     </header>
-    <div class="card">
-        <div class="autoria-form">
-            <h2>Producción Científica > Autoria/Coautoria de libros</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Titulo</th>
-                        <th>Autor/Coautor</th>
-                        <th>Editorial</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let libro of libros">
-                        <td>{{ libro.titulo }}</td>
-                        <td>{{ libro.autor }}</td>
-                        <td>{{ libro.editorial }}</td>
-                        <td>
-                            <button (click)="editarLibro(libro)">Editar</button>
-                            <button (click)="eliminarLibro(libro)">Eliminar</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <button (click)="mostrarModal()" class="btn-agregar">Agregar</button>
-        </div>
-    </div>
+
+    <div class="overlay" (click)="cerrarMenu()"></div>
     
-    <div *ngIf="modalVisible" class="modal">
-        <div class="modal-content">
-            <h3>{{ modoEdicion ? 'Editar' : 'Agregar' }} Libro</h3>
-            <form [formGroup]="libroForm" (ngSubmit)="guardarLibro()">
-                <input formControlName="titulo" placeholder="Título">
-                <input formControlName="autor" placeholder="Autor/Coautor">
-                <input formControlName="editorial" placeholder="Editorial">
-                <input formControlName="referencia" placeholder="Referencia">
-                <div class="button-container">
-                    <button type="submit">Guardar</button>
-                    <button type="button" (click)="cerrarModal()">Cancelar</button>
+    <button class="sidebar-btn" [class.oculto]="menuAbierto" (click)="toggleMenu()">☰</button>
+    
+    <div class="menu" [class.abierto]="menuAbierto">
+        <button (click)="navegarA('inicio')">Información General</button>
+        <button (click)="navegarA('produccionCientifica')">Producción Científica y/o Académica</button>
+        <div *ngIf="submenuAbierto" class="submenu">
+            <button (click)="navegarA('autoria')">Autoria/Coautoria de libros</button>
+            <button (click)="navegarA('proyectos')">Proyectos de investigación</button>
+            <button (click)="navegarA('patentes')">Patentes</button>
+            <button (click)="navegarA('articulosRevistaIndexada')">Articulos de revista indexada</button>
+            <button (click)="navegarA('articulosRevistaDivulgacionCientifica')">Articulos de revista de divulgacion
+                cientifica</button>
+            <button (click)="navegarA('implementacionTecnologica')">Implementación tecnologica</button>
+            <button (click)="navegarA('gradosAcademicosPNPC')">Grados academicos en PNPC</button>
+            <button (click)="navegarA('formaObtencionGrados')">Forma de obtencio de grados</button>
+            <button (click)="navegarA('sni')">SNI</button>
+            <button (click)="navegarA('estancias')">Estancias</button>
+        </div>
+        <button (click)="navegarA('documentos')">Documentos</button>
+        <button (click)="navegarA('guiaUsuario')">Guía de Usuario</button>
+        <button (click)="navegarA('logout')">LogOut</button>
+    </div>
+
+
+    <div class="main-container">
+        <div class="card">
+            <div class="autoria-form">
+                <h2>Producción Científica > Autoria/Coautoria de libros</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Titulo</th>
+                            <th>Autor/Coautor</th>
+                            <th>Editorial</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let libro of libros">
+                            <td>{{ libro.titulo }}</td>
+                            <td>{{ libro.autor }}</td>
+                            <td>{{ libro.editorial }}</td>
+                            <td class="acciones">
+                                <div class="accion">
+                                    <button (click)="editarLibro(libro)">Editar</button>
+                                </div>
+                                <div class="accion">
+                                    <button (click)="eliminarLibro(libro)">Eliminar</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="button-borde">
+                    <button (click)="mostrarModal()" class="btn-agregar">Agregar</button>
+                    <button (click)="navegarA('proyectos')" class="btn-siguiente">Siguiente</button>
                 </div>
-            </form>
+            </div>
+        </div>
+        
+        <div *ngIf="modalVisible" class="modal">
+            <div class="modal-content">
+                <h3>{{ modoEdicion ? 'Editar' : 'Agregar' }} Libro</h3>
+                <form [formGroup]="libroForm" (ngSubmit)="guardarLibro()">
+                    <label for="titulo">Título</label>
+                    <input formControlName="titulo" placeholder="Título">
+                    <label for="autor">Autor/Coautor</label>
+                    <input formControlName="autor" placeholder="Autor/Coautor">
+                    <label for="editorial">Editorial</label>
+                    <input formControlName="editorial" placeholder="Editorial">
+                    <label for="referencia">Referencia</label>
+                    <input formControlName="referencia" placeholder="Referencia">
+                    <div class="button-container">
+                        <button type="submit" class="btn-aceptar">Aceptar</button>
+                        <button type="button" class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     

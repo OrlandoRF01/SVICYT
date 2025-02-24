@@ -1,52 +1,22 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SessionTimerService } from '../../session-timer.service';
+import { SessionTimerService } from '../session-timer.service';
 import { Subscription } from 'rxjs';
 
-interface Proyecto {
-  referencia: string;
-  titulo: string;
-  participacion: string;
-  fechaInicio: string;
-  fechaTermino: string;
-  area: string;
-  institucionPrincipal: string;
-  institucionesAsociadas: string;
-  fuenteGobFederal: boolean;
-  fuenteGobEstatal: boolean;
-  fuenteConacyt: boolean;
-  fuenteONG: boolean;
-  fuenteFomix: boolean;
-  fuenteInstitucion: boolean;
-  fuenteOtro: boolean;
-  montoFinanciamiento: string;
-  reporteTecnico: boolean;
-  prototipo: boolean;
-  publicacion: boolean;
-  usuarios: string;
-}
-
-
 @Component({
-  selector: 'app-proyectos',
+  selector: 'app-inicio-produccion-cientifica',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './proyectos.component.html',
-  styleUrl: './proyectos.component.css'
+  imports: [CommonModule, FormsModule],
+  templateUrl: './inicio-produccion-cientifica.component.html',
+  styleUrl: './inicio-produccion-cientifica.component.css'
 })
-export class ProyectosComponent implements OnInit, OnDestroy {
+export class InicioProduccionCientificaComponent implements OnInit, OnDestroy {
+  seccionActiva: string = 'produccionCientifica';
   tiempoRestante: number = 30 * 60;
   private tiempoSubscription: Subscription | undefined;
-  proyectos: Proyecto[] = [];
-  proyectoForm: FormGroup;
-  modalVisible = false;
-  modoEdicion = false;
-  proyectoEnEdicion: Proyecto | null = null;
 
-  seccionActiva: string = 'produccionCientifica';
   menuAbierto: boolean = false;
   submenuAbierto: boolean = false;
 
@@ -61,30 +31,10 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     formaObtencionGrados: '',
     sni: '',
     estancias: ''
-
+    
   };
 
-  fuentesFinanciamiento = [
-    'Gob. Federal', 'Gob. Estatal', 'CONACYT', 'ONG', 'FOMIX', 'Institución perteneciente', 'Otro'
-  ];
-  productosDerivados = ['Reporte técnico', 'Prototipo', 'Publicación'];
-
-  constructor(private fb: FormBuilder, private sessionTimerService: SessionTimerService, private router: Router) {
-    this.proyectoForm = this.fb.group({
-      referencia: ['', Validators.required],
-      titulo: ['', Validators.required],
-      participacion: ['', Validators.required],
-      fechaInicio: ['', Validators.required],
-      fechaTermino: ['', Validators.required],
-      area: ['', Validators.required],
-      institucionPrincipal: ['', Validators.required],
-      institucionesAsociadas: [''],
-      fuenteFinanciamiento: ['', Validators.required], // Se usa radio en vez de checkbox
-      montoFinanciamiento: ['', Validators.required],
-      productoDerivado: ['', Validators.required], // Se usa radio en vez de checkbox
-      usuarios: ['']
-    });
-  }
+  constructor(private sessionTimerService: SessionTimerService, private router: Router) { }
 
   ngOnInit() {
     this.tiempoSubscription = this.sessionTimerService.iniciarTemporizador().subscribe(
@@ -100,43 +50,6 @@ export class ProyectosComponent implements OnInit, OnDestroy {
 
   formatoTiempo(): string {
     return this.sessionTimerService.formatoTiempo(this.tiempoRestante);
-  }
-
-  mostrarModal() {
-    this.modalVisible = true;
-    this.modoEdicion = false;
-    this.proyectoForm.reset();
-  }
-
-  cerrarModal() {
-    this.modalVisible = false;
-    this.proyectoForm.reset();
-  }
-
-  guardarProyecto() {
-    if (this.proyectoForm.valid) {
-      if (this.modoEdicion && this.proyectoEnEdicion) {
-        const index = this.proyectos.indexOf(this.proyectoEnEdicion);
-        this.proyectos[index] = this.proyectoForm.value;
-      } else {
-        this.proyectos.push(this.proyectoForm.value);
-      }
-      this.cerrarModal();
-    }
-  }
-
-  editarProyecto(proyecto: Proyecto) {
-    this.modoEdicion = true;
-    this.proyectoEnEdicion = proyecto;
-    this.proyectoForm.setValue(proyecto);
-    this.modalVisible = true;
-  }
-
-  eliminarProyecto(proyecto: Proyecto) {
-    const index = this.proyectos.indexOf(proyecto);
-    if (index > -1) {
-      this.proyectos.splice(index, 1);
-    }
   }
 
   cambiarSeccion(seccion: string) {

@@ -22,6 +22,8 @@ import { IneComponent } from './documentacion/ine/ine.component';
 import { InscripcionInstitucionalComponent } from './documentacion/inscripcion-institucional/inscripcion-institucional.component';
 import { ParticipacionProyectosComponent } from './documentacion/participacion-proyectos/participacion-proyectos.component';
 import { ProbatorioProduccionComponent } from './documentacion/probatorio-produccion/probatorio-produccion.component';
+import { InicioProduccionCientificaComponent } from './inicio-produccion-cientifica/inicio-produccion-cientifica.component';
+import { InicioDocumentosComponent } from './inicio-documentos/inicio-documentos.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -48,6 +50,8 @@ export const routes: Routes = [
     { path: 'documentoProbatorioAdscripcionInstitucional', component: InscripcionInstitucionalComponent },
     { path: 'documentoProbatorioParticipacionProyectos', component: ParticipacionProyectosComponent }, 
     { path: 'documentoProbatorioProduccionCientifica', component: ProbatorioProduccionComponent },
+    { path: 'inicioProduccionCientifica', component: InicioProduccionCientificaComponent },
+    { path: 'inicioDocumentos', component: InicioDocumentosComponent },
     { path: '**', redirectTo: 'registro' }
 
 ];
